@@ -6,7 +6,7 @@ make O=out ARCH=arm64 test_defconfig
 ZIPNAME="WeebKernelOOS_$(date '+%Y-%m-%d_%H:%M:%S').zip"
 make -j$(nproc --all) O=out \
                       ARCH=arm64 \
-                      CC="${pwd}/googleclang/clang-r328903/bin/clang" \
+                      CC="$(pwd)/googleclang/clang-r328903/bin/clang" \
                       CLANG_TRIPLE=aarch64-linux-gnu- \
                       CROSS_COMPILE="$(pwd)/aarch64-linux-android/bin/aarch64-opt-linux-android-"
 rm -rf ${pwd}/anykernel/ramdisk/modules/wlan.ko
