@@ -27,4 +27,4 @@ cd ..
 #curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Branch: $(git rev-parse --abbrev-ref HEAD)" -d chat_id=$CHAT_ID
 #curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Commit: $(git log --pretty=format:'%h : %s' -1)" -d chat_id=$CHAT_ID
 #curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Download:" -d chat_id=$CHAT_ID
-curl -F chat_id="$CHAT_ID" -F document=@"path_to_zip" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
+curl -F chat_id="$CHAT_ID" -F document=@"$(pwd)/anykernel/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
