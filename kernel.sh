@@ -11,15 +11,15 @@ make -j$(nproc --all) O=out \
                       CC="$(pwd)/googleclang/clang-r328903/bin/clang" \
                       CLANG_TRIPLE=aarch64-linux-gnu- \
                       CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
-rm -rf ${pwd}/anykernel/ramdisk/modules/wlan.ko
-rm -rf ${pwd}/anykernel/kernels/oos/Image.gz-dtb
+rm -rf $(pwd)/anykernel/ramdisk/modules/wlan.ko
+rm -rf $(pwd)/anykernel/kernels/oos/Image.gz-dtb
 chmod +x -R $(pwd)/out
 mkdir anykernel/kernels
 mkdir anykernel/kernels/oos
 mkdir anykernel/ramdisk/modules
-cp ${pwd}/out/arch/arm64/boot/Image.gz-dtb ${pwd}/anykernel/kernels/oos/
-cp ${pwd}/out/drivers/staging/qcacld-3.0/wlan.ko ${pwd}/anykernel/ramdisk/modules
-find ${pwd}/anykernel/ramdisk/modules -name '*.ko' -exec${pwd}/out/scripts/sign-file sha512 ${pwd}/out/certs/signing_key.pem ${pwd}/out/certs/signing_key.x509 {} \;
+cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel/kernels/oos/
+cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/ramdisk/modules
+find $(pwd)/anykernel/ramdisk/modules -name '*.ko' -exec$(pwd)/out/scripts/sign-file sha512 $(pwd)/out/certs/signing_key.pem $(pwd)/out/certs/signing_key.x509 {} \;
 cd $(pwd)/anykernel
 zip -r9 $ZIPNAME * -x README.md $ZIPNAME
 cd ..
