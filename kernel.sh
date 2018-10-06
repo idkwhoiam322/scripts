@@ -1,6 +1,7 @@
 #!/bin/bash
 cd ..
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build started for commit:
+curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build started for branch $(git rev-parse --abbrev-ref HEAD) using Clang 7.0.2!" -d chat_id=$CHAT_ID
+curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Latest Commits:
 $(git log --pretty=format:'%h : %s' -{1..5})" -d chat_id=$CHAT_ID
 rm -rf out
 mkdir -p out
@@ -25,7 +26,5 @@ cd $(pwd)/anykernel
 zip -r9 $ZIPNAME * -x README.md $ZIPNAME
 cd ..
 
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Branch: $(git rev-parse --abbrev-ref HEAD)" -d chat_id=$CHAT_ID
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Commit: $(git log --pretty=format:'%h : %s' -1)" -d chat_id=$CHAT_ID
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Download:" -d chat_id=$CHAT_ID
 curl -F chat_id="$CHAT_ID" -F document=@"$(pwd)/anykernel/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
