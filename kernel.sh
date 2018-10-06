@@ -21,6 +21,7 @@ mkdir anykernel/kernels/oos
 mkdir anykernel/ramdisk/modules
 cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel/kernels/oos/
 cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/ramdisk/modules
+$(pwd)/gcc/bin/aarch64-linux-android-strip --strip-unneeded $(pwd)/anykernel/ramdisk/modules/wlan.ko
 find $(pwd)/anykernel/ramdisk/modules -name '*.ko' -exec$(pwd)/out/scripts/sign-file sha512 $(pwd)/out/certs/signing_key.pem $(pwd)/out/certs/signing_key.x509 {} \;
 cd $(pwd)/anykernel
 zip -r9 $ZIPNAME * -x README.md $ZIPNAME
