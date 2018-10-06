@@ -26,6 +26,5 @@ find $(pwd)/anykernel/ramdisk/modules -name '*.ko' -exec$(pwd)/out/scripts/sign-
 cd $(pwd)/anykernel
 zip -r9 $ZIPNAME * -x README.md $ZIPNAME
 cd ..
-
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Download:" -d chat_id=$CHAT_ID
 curl -F chat_id="$CHAT_ID" -F document=@"$(pwd)/anykernel/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
