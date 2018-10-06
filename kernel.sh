@@ -1,5 +1,6 @@
 #!/bin/bash
 #curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build started for commit $(git log --pretty=format:'%h : %s' -1)" -d chat_id=$CHAT_ID
+cd ..
 rm -rf out
 mkdir -p out
 make O=out ARCH=arm64 test_defconfig
@@ -8,7 +9,7 @@ make -j$(nproc --all) O=out \
                       ARCH=arm64 \
                       CC="$(pwd)/googleclang/clang-r328903/bin/clang" \
                       CLANG_TRIPLE=aarch64-linux-gnu- \
-                      CROSS_COMPILE="$(pwd)/aarch64-linux-android/bin/aarch64-opt-linux-android-"
+                      CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 rm -rf ${pwd}/anykernel/ramdisk/modules/wlan.ko
 rm -rf ${pwd}/anykernel/kernels/oos/Image.gz-dtb
 chmod +x -R $(pwd)/out
