@@ -4,6 +4,7 @@ cd ..
 rm -rf out
 mkdir -p out
 make O=out ARCH=arm64 test_defconfig
+chmod +x -R $(pwd)/
 ZIPNAME="WeebKernelOOS_$(date '+%Y-%m-%d_%H:%M:%S').zip"
 make -j$(nproc --all) O=out \
                       ARCH=arm64 \
