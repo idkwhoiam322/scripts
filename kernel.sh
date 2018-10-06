@@ -1,6 +1,6 @@
 #!/bin/bash
 cd ..
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build started for commit $(git log --pretty=format:'%h : %s' -{1..4})" -d chat_id=$CHAT_ID
+curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build started for commit:\n $(git log --pretty=format:'%h : %s' -{1..4})" -d chat_id=$CHAT_ID
 rm -rf out
 mkdir -p out
 make O=out ARCH=arm64 test_defconfig
