@@ -10,7 +10,7 @@ chmod +x -R $(pwd)/
 ZIPNAME="WeebKernelOOS_$(date '+%Y-%m-%d_%H:%M:%S').zip"
 make -j$(nproc --all) O=out \
                       ARCH=arm64 \
-                      CC="$(pwd)/googleclang/clang-r328903/bin/clang" \
+                      CC="$(pwd)/clang/clang-r328903/bin/clang" \
                       CLANG_TRIPLE=aarch64-linux-gnu- \
                       CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 rm -rf $(pwd)/anykernel/ramdisk/modules/wlan.ko
