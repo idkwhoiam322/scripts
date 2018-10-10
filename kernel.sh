@@ -52,4 +52,6 @@ The build took $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds to compile su
 Uploading Kernel zip file here now!! 
 	~(^.^)~" -d chat_id=$CHAT_ID
 curl -F chat_id="$CHAT_ID" -F document=@"$(pwd)/anykernel/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
-curl -F chat_id="$CHAT_ID" -F sticker=@"CAADBQADIwAD8IPPFYsobXzJMz7mAg" https://api.telegram.org/bot$BOT_API_KEY/sendSticker
+curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendSticker \
+	-d sticker="CAADBQAD_gYAAsZRxhXEFftdkpzKwAI" \
+	-d chat_id=${CHAT_ID} >> /dev/null
