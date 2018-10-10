@@ -25,6 +25,9 @@ curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Se
 Build took $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds to fail miserably!
 Check log file <code>$LOGFILE</code>" -d chat_id=$CHAT_ID
 curl -F chat_id="$CHAT_ID" -F document=@"$LOGFILE" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
+curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendSticker \
+	-d sticker="CAADBQADUBwAAsZRxhXTwSK4KP5DpwI" \
+	-d chat_id=${CHAT_ID} >> /dev/null
 exit 1;
 fi
 
