@@ -11,14 +11,14 @@ mkdir -p out
 make O=out ARCH=arm64 test_defconfig
 chmod +x -R $(pwd)/
 
+#
 #	Compile the Kernel
+#
+# START, END and DIFF variables to calculate rough compilation time!
+
 START=$(date +"%s")
 make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r328903/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"	| tee $LOGFILE
 EXITCODE=$?
-END=$(date +"%s")
-DIFF=$((END - START))
-# START, END and DIFF variables to calculate rough compilation time!
-
 #	Failure
 if [ $EXITCODE -ne 0 ]; then 
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Senpai, I hate to tell you but... git commit die!
@@ -30,6 +30,10 @@ curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendSticker \
 	-d chat_id=${CHAT_ID} >> /dev/null
 exit 1;
 fi
+END=$(date +"%s")
+DIFF=$((END - START))
+
+
 
 #	Success
 rm -rf $(pwd)/anykernel/ramdisk/modules/wlan.ko
