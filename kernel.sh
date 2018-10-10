@@ -13,7 +13,7 @@ chmod +x -R $(pwd)/
 
 #	Compile the Kernel
 START=$(date +"%s")
-time make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r328903/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"	| tee $LOGFILE
+make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r328903/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"	| tee $LOGFILE
 END=$(date +"%s")
 DIFF=$((END - START))
 # START, END and DIFF variables to calculate rough compilation time!
