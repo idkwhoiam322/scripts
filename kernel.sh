@@ -22,7 +22,7 @@ EXITCODE=$?
 #	Failure
 if [ $EXITCODE -ne 0 ]; then 
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Senpai, I hate to tell you but... git commit die!
-Build took $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds to fail miserably!
+Build took so much time to fail miserably!
 Check log file <code>$LOGFILE</code>" -d chat_id=$CHAT_ID
 curl -F chat_id="$CHAT_ID" -F document=@"$LOGFILE" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendSticker \
