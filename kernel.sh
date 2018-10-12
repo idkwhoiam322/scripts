@@ -78,7 +78,7 @@ END=$(date +"%s")
 DIFF=$((END - START))
 
 #	Success
-mkdir anykernel/kernels/Custom
+mkdir anykernel/kernels/custom
 cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel/kernels/custom/
 
 
