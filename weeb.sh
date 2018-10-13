@@ -23,12 +23,12 @@ chmod +x -R $(pwd)/
 
 START=$(date +"%s")
 
-#	Log
-export LOGFILE=log-$BUILDDATE-$BUILDTIME.txt
-
 #	Date and Time
 export BUILDDATE=$(date +%Y%m%d)
 export BUILDTIME=$(date +%H%M)
+
+#	Log
+export LOGFILE=log-$BUILDDATE-$BUILDTIME.txt
 
 make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r328903/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"	| tee $LOGFILE
 
@@ -58,12 +58,12 @@ find $(pwd)/anykernel/ramdisk/modules -name '*.ko' -exec $(pwd)/out/scripts/sign
 #
 #	Time for Custom Treble
 #
-#	Log - 2
-export LOGFILE=log-$BUILDDATE-$BUILDTIME.txt
-
 #	Date and Time - 2
 export BUILDDATE=$(date +%Y%m%d)
 export BUILDTIME=$(date +%H%M)
+
+#	Log - 2
+export LOGFILE=log-$BUILDDATE-$BUILDTIME.txt
 
 rm -rf out
 mkdir -p out

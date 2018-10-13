@@ -21,12 +21,12 @@ chmod +x -R $(pwd)/
 
 START=$(date +"%s")
 
-#	Log
-export LOGFILE=log-$BUILDDATE-$BUILDTIME.txt
-
 #	Date and Time
 export BUILDDATE=$(date +%Y%m%d)
 export BUILDTIME=$(date +%H%M)
+
+#	Log
+export LOGFILE=log-$BUILDDATE-$BUILDTIME.txt
 
 make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r328903/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"	| tee $LOGFILE
 
