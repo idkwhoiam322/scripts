@@ -26,7 +26,7 @@ chmod +x -R $(pwd)/
 #	Compile the Kernel
 #
 
-# START, END and DIFF variables to calculate rough total compilation time!
+#	START, END and DIFF variables to calculate rough total compilation time!
 
 START=$(date +"%s")
 make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r328903/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"	| tee $LOGFILE
@@ -87,7 +87,7 @@ mkdir anykernel/kernels/custom
 cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel/kernels/custom/
 
 
-#ReZIP the Kernel
+#	ReZIP the Kernel
 cd $(pwd)/anykernel
 ZIPNAME="WeebKernel-Treble_$(date '+%Y-%m-%d_%H:%M:%S').zip"
 zip -r9 $ZIPNAME * -x README.md $ZIPNAME
