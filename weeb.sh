@@ -22,21 +22,15 @@ chmod +x -R $(pwd)/
 
 START=$(date +"%s")
 make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r328903/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"	| tee $LOGFILE
-EXITCODE=$?
+
 #	Failure
-if [ $EXITCODE -ne 0 ]; then 
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Senpai, I hate to tell you but... git commit die!
-Build took so much time to fail building for OxygenOS miserably!
+Here's logs in case building for OxygenOS failed miserably!!
 Check log file <code>$LOGFILE</code>" -d chat_id=$CHAT_ID
 curl -F chat_id="$CHAT_ID" -F document=@"$LOGFILE" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendSticker \
 	-d sticker="CAADBQADUBwAAsZRxhXTwSK4KP5DpwI" \
 	-d chat_id=${CHAT_ID} >> /dev/null
-exit 1;
-fi
-
-
-
 
 #	Success
 rm -rf $(pwd)/anykernel/ramdisk/modules/wlan.ko
@@ -60,19 +54,15 @@ mkdir -p out
 make O=out ARCH=arm64 weebcustom_defconfig
 chmod +x -R $(pwd)/
 make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r328903/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"	| tee $LOGFILE
-EXITCODE=$?
 
 #	Failure
-if [ $EXITCODE -ne 0 ]; then 
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Senpai, I hate to tell you but... git commit die!
-Build took so much time to fail building for Treble ROMs miserably!
+Here's logs in case building for Treble ROMs failed miserably!
 Check log file <code>$LOGFILE</code>" -d chat_id=$CHAT_ID
 curl -F chat_id="$CHAT_ID" -F document=@"$LOGFILE" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendSticker \
 	-d sticker="CAADBQADUBwAAsZRxhXTwSK4KP5DpwI" \
 	-d chat_id=${CHAT_ID} >> /dev/null
-exit 1;
-fi
 
 END=$(date +"%s")
 DIFF=$((END - START))
@@ -95,5 +85,5 @@ Uploading Kernel zip file here now!!
 	~(^.^)~" -d chat_id=$CHAT_ID
 curl -F chat_id="$CHAT_ID" -F document=@"$(pwd)/anykernel/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendSticker \
-	-d sticker="CAADBQAD_gYAAsZRxhXEFftdkpzKwAI" \
+	-d sticker="CAADBAADowgAAt5A-AcSyb2Qk2tPQQI" \
 	-d chat_id=${CHAT_ID} >> /dev/null
