@@ -35,7 +35,7 @@ make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r328903/bin/clang"
 #	Failure
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Senpai, I hate to tell you but... git commit die!
 Here's logs in case building for OxygenOS failed miserably!!
-Check log file <code>$LOGFILE</code>" -d chat_id=$CHAT_ID
+Check log file $LOGFILE" -d chat_id=$CHAT_ID
 curl -F chat_id="$CHAT_ID" -F document=@"$LOGFILE" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendSticker \
 	-d sticker="CAADBQADUBwAAsZRxhXTwSK4KP5DpwI" \
@@ -74,7 +74,7 @@ make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r328903/bin/clang"
 #	Failure
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Senpai, I hate to tell you but... git commit die!
 Here's logs in case building for Treble ROMs failed miserably!
-Check log file <code>$LOGFILE</code>" -d chat_id=$CHAT_ID
+Check log file $LOGFILE" -d chat_id=$CHAT_ID
 curl -F chat_id="$CHAT_ID" -F document=@"$LOGFILE" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendSticker \
 	-d sticker="CAADBQADUBwAAsZRxhXTwSK4KP5DpwI" \
