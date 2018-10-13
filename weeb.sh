@@ -1,13 +1,6 @@
 #!/bin/bash
 cd ..
 
-#	Log
-export LOGFILE=log-$BUILDDATE-$BUILDTIME.txt
-
-#	Date and Time
-export BUILDDATE=$(date +%Y%m%d)
-export BUILDTIME=$(date +%H%M)
-
 export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r328903/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build started for branch $(git rev-parse --abbrev-ref HEAD) using Clang 7.0.2!" -d chat_id=$CHAT_ID
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Latest Commits:
@@ -29,6 +22,14 @@ chmod +x -R $(pwd)/
 #	START, END and DIFF variables to calculate rough total compilation time!
 
 START=$(date +"%s")
+
+#	Log
+export LOGFILE=log-$BUILDDATE-$BUILDTIME.txt
+
+#	Date and Time
+export BUILDDATE=$(date +%Y%m%d)
+export BUILDTIME=$(date +%H%M)
+
 make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r328903/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"	| tee $LOGFILE
 
 #	Failure
