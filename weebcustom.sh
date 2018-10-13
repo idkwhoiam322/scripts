@@ -15,6 +15,7 @@ rm -rf out
 mkdir -p out
 make O=out ARCH=arm64 weebcustom_defconfig
 chmod +x -R $(pwd)/
+START=$(date +"%s")
 make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r328903/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"	| tee $LOGFILE
 EXITCODE=$?
 
