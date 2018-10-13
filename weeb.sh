@@ -1,6 +1,13 @@
 #!/bin/bash
 cd ..
+
+#	Log
 export LOGFILE=log-$BUILDDATE-$BUILDTIME.txt
+
+#	Date and Time
+export BUILDDATE=$(date +%Y%m%d)
+export BUILDTIME=$(date +%H%M)
+
 export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r328903/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build started for branch $(git rev-parse --abbrev-ref HEAD) using Clang 7.0.2!" -d chat_id=$CHAT_ID
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Latest Commits:
@@ -50,6 +57,13 @@ find $(pwd)/anykernel/ramdisk/modules -name '*.ko' -exec $(pwd)/out/scripts/sign
 #
 #	Time for Custom Treble
 #
+#	Log - 2
+export LOGFILE=log-$BUILDDATE-$BUILDTIME.txt
+
+#	Date and Time - 2
+export BUILDDATE=$(date +%Y%m%d)
+export BUILDTIME=$(date +%H%M)
+
 rm -rf out
 mkdir -p out
 make O=out ARCH=arm64 weebcustom_defconfig
