@@ -52,7 +52,9 @@ cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel/kernels/custom/
 
 #	ReZIP the Kernel
 cd $(pwd)/anykernel
-ZIPNAME="WeebKerneL-NonTreble_V1.11.zip"
+rm -rf treble.sh
+mv nontreble.sh anykernel.sh
+ZIPNAME="WeebKerneL-NonTreble_V1.12.zip"
 zip -r9 $ZIPNAME * -x README.md $ZIPNAME
 
 #	Time to push the Kernel ZIP

@@ -90,6 +90,8 @@ cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel/kernels/custom/
 
 #	ReZIP the Kernel
 cd $(pwd)/anykernel
+rm -rf nontreble.sh
+mv treble.sh anykernel.sh
 ZIPNAME="WeebKernel-Treble_$(date '+%Y-%m-%d_%H:%M:%S').zip"
 zip -r9 $ZIPNAME * -x README.md $ZIPNAME
 
