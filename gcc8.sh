@@ -20,6 +20,7 @@ sudo chown runner out/ -R
 
 make O=out weeb_defconfig
 chmod +x -R $(pwd)/
+START=$(date +"%s")
 make O=out -j$(nproc --all)
 
 #	AnyKernel - OxygenOS
@@ -51,6 +52,8 @@ sudo chown runner out/ -R
 make O=out ARCH=arm64 weebcustom_defconfig
 chmod +x -R $(pwd)/
 make O=out -j$(nproc --all)
+END=$(date +"%s")
+DIFF=$((END - START))
 
 #	AnyKernel - Custom Treble ROMs
 
@@ -68,4 +71,7 @@ ZIPNAME="WeebKernel-Treble_GCC8_$(date '+%Y-%m-%d_%H:%M:%S').zip"
 zip -r9 $ZIPNAME * -x README.md $ZIPNAME
 #	Push to Telegram CI Channel
 cd ..
+curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build Completed!
+Time of compilation:$((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds.
+Uploading GCC8 Kernel zip file here now" -d chat_id=$CHAT_ID
 curl -F chat_id="$CHAT_ID" -F document=@"$(pwd)/anykernel/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
