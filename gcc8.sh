@@ -8,8 +8,11 @@ cd gcc
 export CROSS_COMPILE=$(pwd)/bin/aarch64-opt-linux-android-
 cd ..
 export ARCH=arm64
-rm -rf out
-mkdir -p out
+sudo umount -f out
+sudo rm -rf out
+mkdir out
+sudo mount -t tmpfs -o size=6g tmpfs out
+sudo chown runner out/ -R
 
 #
 #	Kernel - OxygenOS
@@ -35,8 +38,11 @@ find $(pwd)/anykernel/ramdisk/modules -name '*.ko' -exec $(pwd)/out/scripts/sign
 #
 #	Prepare for next image
 #
-rm -rf out
-mkdir -p out
+sudo umount -f out
+sudo rm -rf out
+mkdir out
+sudo mount -t tmpfs -o size=6g tmpfs out
+sudo chown runner out/ -R
 
 #
 #	Kernel - Custom Treble ROMs

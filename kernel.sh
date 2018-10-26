@@ -5,8 +5,11 @@ export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r328903/bin/clang --version 
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build started for branch $(git rev-parse --abbrev-ref HEAD) using Clang 7.0.2!
 Latest Commits:
 $(git log --pretty=format:'%h : %s' -1)" -d chat_id=$CHAT_ID
-rm -rf out
-mkdir -p out
+sudo umount -f out
+sudo rm -rf out
+mkdir out
+sudo mount -t tmpfs -o size=6g tmpfs out
+sudo chown runner out/ -R
 
 #	Let's compile this mess
 #
@@ -65,8 +68,11 @@ export BUILDTIME=$(date +%H%M)
 #	Log - 2
 export LOGFILE=log-$BUILDDATE-$BUILDTIME.txt
 
-rm -rf out
-mkdir -p out
+sudo umount -f out
+sudo rm -rf out
+mkdir out
+sudo mount -t tmpfs -o size=6g tmpfs out
+sudo chown runner out/ -R
 make O=out ARCH=arm64 weebcustom_defconfig
 chmod +x -R $(pwd)/
 make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r328903/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"	| tee $LOGFILE
