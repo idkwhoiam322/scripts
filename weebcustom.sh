@@ -59,7 +59,7 @@ zip -r9 $ZIPNAME * -x README.md $ZIPNAME
 
 #	Time to push the Kernel ZIP
 cd ..
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build Success Oniisama!
+curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Weebu Karuneru bureedo successu Oniisama!
 The build took $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds to compile successfully!!
 Uploading Kernel zip file here now!! 
 	~(^.^)~" -d chat_id=$CHAT_ID
