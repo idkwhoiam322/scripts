@@ -35,9 +35,7 @@ curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Se
 Here's logs in case building for Non Treble ROMs miserably!
 Check log file $LOGFILE" -d chat_id=$CHAT_ID
 curl -F chat_id="$CHAT_ID" -F document=@"$LOGFILE" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendSticker \
-	-d sticker="CAADBQADUBwAAsZRxhXTwSK4KP5DpwI" \
-	-d chat_id=${CHAT_ID} >> /dev/null
+
 
 
 END=$(date +"%s")
@@ -64,6 +62,3 @@ The build took $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds to compile su
 Uploading Kernel zip file here now!! 
 	~(^.^)~" -d chat_id=$CHAT_ID
 curl -F chat_id="$CHAT_ID" -F document=@"$(pwd)/anykernel/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendSticker \
-	-d sticker="CAADBAADowgAAt5A-AcSyb2Qk2tPQQI" \
-	-d chat_id=${CHAT_ID} >> /dev/null
