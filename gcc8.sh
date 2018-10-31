@@ -9,10 +9,6 @@ export CROSS_COMPILE=$(pwd)/bin/aarch64-opt-linux-android-
 cd ..
 export ARCH=arm64
 
-mkdir -p out
-sudo mount -t tmpfs -o size=3.5g tmpfs out
-sudo chown runner out/ -R
-
 #
 #	Kernel - OxygenOS
 #

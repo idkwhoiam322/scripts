@@ -6,16 +6,11 @@ curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Bu
 Latest Commits:
 $(git log --pretty=format:'%h : %s' -{1..5})" -d chat_id=$CHAT_ID
 
-mkdir -p out
-sudo mount -t tmpfs -o size=3.5g tmpfs out
-sudo chown runner out/ -R
-
 #	Let's compile this mess
 #
 #	Time for OxygenOS Treble
 #
 make O=out ARCH=arm64 weeb_defconfig
-chmod +x -R $(pwd)/
 
 #
 #	Compile the Kernel
