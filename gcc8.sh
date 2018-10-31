@@ -11,7 +11,7 @@ export ARCH=arm64
 sudo umount -f out
 sudo rm -rf out
 mkdir out
-sudo mount -t tmpfs -o size=6g tmpfs out
+sudo mount -t tmpfs -o size=2g tmpfs out
 sudo chown runner out/ -R
 
 #
@@ -19,7 +19,6 @@ sudo chown runner out/ -R
 #
 
 make O=out weeb_defconfig
-chmod +x -R $(pwd)/
 START=$(date +"%s")
 make O=out -j$(nproc --all)
 
@@ -50,7 +49,6 @@ sudo chown runner out/ -R
 #
 
 make O=out ARCH=arm64 weebcustom_defconfig
-chmod +x -R $(pwd)/
 make O=out -j$(nproc --all)
 END=$(date +"%s")
 DIFF=$((END - START))

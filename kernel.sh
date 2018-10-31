@@ -8,7 +8,7 @@ $(git log --pretty=format:'%h : %s' -{1..5})" -d chat_id=$CHAT_ID
 sudo umount -f out
 sudo rm -rf out
 mkdir out
-sudo mount -t tmpfs -o size=6g tmpfs out
+sudo mount -t tmpfs -o size=2g tmpfs out
 sudo chown runner out/ -R
 
 #	Let's compile this mess
@@ -44,7 +44,6 @@ curl -F chat_id="$CHAT_ID" -F document=@"$LOGFILE" https://api.telegram.org/bot$
 #	Success
 rm -rf $(pwd)/anykernel/ramdisk/modules/wlan.ko
 rm -rf $(pwd)/anykernel/kernels/oos/Image.gz-dtb
-chmod +x -R $(pwd)/out
 
 #	Preparing Kernel ZIP
 mkdir anykernel/kernels
@@ -71,7 +70,6 @@ mkdir out
 sudo mount -t tmpfs -o size=6g tmpfs out
 sudo chown runner out/ -R
 make O=out ARCH=arm64 weebcustom_defconfig
-chmod +x -R $(pwd)/
 make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r328903/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"	| tee $LOGFILE
 
 #	Failure
