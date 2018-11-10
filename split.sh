@@ -44,7 +44,7 @@ rm -rf nontreble.sh
 mv treble.sh anykernel.sh
 
 #	Name and push zip
-ZIPNAME="WeebKernel-OOS_$(date '+%Y-%m-%d_%H:%M:%S').zip"
+ZIPNAME="WEEB_KERNEL_OOSr$SEMAPHORE_BUILD_NUMBER.zip"
 zip -r9 $ZIPNAME * -x README.md $ZIPNAME
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Weeb Kernel TEST Build for OxygenOS compiled successfully!
 The build took $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds to compile successfully!!
@@ -74,7 +74,7 @@ cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel/kernels/custom/
 
 #	Name and push zip
 cd $(pwd)/anykernel
-ZIPNAME="WeebKernel-Treble_$(date '+%Y-%m-%d_%H:%M:%S').zip"
+ZIPNAME="WEEB_KERNEL_TREBLEr$SEMAPHORE_BUILD_NUMBER.zip"
 zip -r9 $ZIPNAME * -x README.md $ZIPNAME
 
 #	Time to push the Custom ROM Treble Kernel ZIP
