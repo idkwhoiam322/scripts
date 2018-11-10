@@ -5,7 +5,6 @@ export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r344140/bin/clang --version 
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build started for branch $(git rev-parse --abbrev-ref HEAD) using Clang 8.0.3!
 Latest Commits:
 $(git log --pretty=format:'%h : %s' -{1..5})" -d chat_id=$CHAT_ID
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="First we'll cook for OxygenOS!" -d chat_id=$CHAT_ID
 #	Let's compile this mess
 #
 #	Time for OxygenOS Treble
@@ -46,9 +45,12 @@ mv treble.sh anykernel.sh
 #	Name and push zip
 ZIPNAME="WEEB_KERNEL_OOSr$SEMAPHORE_BUILD_NUMBER.zip"
 zip -r9 $ZIPNAME * -x README.md $ZIPNAME
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Weeb Kernel TEST Build for OxygenOS compiled successfully!
-The build took $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds to compile successfully!!
-Uploading Kernel zip file here now!!" -d chat_id=$CHAT_ID
+curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Kernel: Weeb Kernel
+Type: BETA
+Revision: $REVISION
+ROM Support: OxygenOS
+Compilation Time: $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds
+Uploading...." -d chat_id=$CHAT_ID
 curl -F chat_id="$CHAT_ID" -F document=@"$(pwd)/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 rm -rf $ZIPNAME
 rm -rf kernels/oos
@@ -60,8 +62,6 @@ cd ..
 #
 #	Time for Custom Treble
 #
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Now let's compile for Custom Treble ROMs!" -d chat_id=$CHAT_ID
-
 make O=out ARCH=arm64 weebcustom_defconfig
 START=$(date +"%s")
 make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r344140/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
@@ -78,9 +78,12 @@ ZIPNAME="WEEB_KERNEL_TREBLEr$SEMAPHORE_BUILD_NUMBER.zip"
 zip -r9 $ZIPNAME * -x README.md $ZIPNAME
 
 #	Time to push the Custom ROM Treble Kernel ZIP
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Weeb Kernel TEST Build for Custom Treble ROMs compiled successfully!
-The build took $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds to compile successfully!!
-Uploading Kernel zip file here now!!" -d chat_id=$CHAT_ID
+curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Kernel: Weeb Kernel
+Type: BETA
+Revision: $REVISION
+ROM Support: Custom Treble ROMs
+Compilation Time: $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds
+Uploading...." -d chat_id=$CHAT_ID
 curl -F chat_id="$CHAT_ID" -F document=@"$(pwd)/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 # Extra line here for OCD
 
