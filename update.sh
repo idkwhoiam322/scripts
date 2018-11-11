@@ -49,7 +49,6 @@ cd ..
 #	Time for Custom Treble
 #
 make O=out ARCH=arm64 weebcustom_defconfig
-START=$(date +"%s")
 make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r344140/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 END=$(date +"%s")
 DIFF=$((END - START))
