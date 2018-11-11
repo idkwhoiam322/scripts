@@ -2,9 +2,7 @@
 cd ..
 
 export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r344140/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build started for branch $(git rev-parse --abbrev-ref HEAD) using Clang 8.0.3!
-Latest Commits:
-$(git log --pretty=format:'%h : %s' -{1..5})" -d chat_id=$CHAT_ID
+
 #	Let's compile this mess
 #
 #	Time for OxygenOS Treble
