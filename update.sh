@@ -2,7 +2,15 @@
 cd ..
 
 export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r344140/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
-
+curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Kernel: <code>Weeb Kernel</code>
+Type: <code>BETA</code>
+Device: <code>OnePlus 5/T</code>
+Compiler: <code>Clang 8.0.3</code>
+Latest Commit: <code>$REVISION</code>
+Build Version: <code>r$SEMAPHORE_BUILD_NUMBER</code>
+ROM Support: <code>Treble ROMs (Custom + OxygenOS)</code>
+Compilation Time: <code>$((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds</code>
+<i>Building....</i>" -d chat_id=$CHAT_ID -d parse_mode=HTML
 #	Let's compile this mess
 #
 #	Time for OxygenOS Treble
@@ -57,14 +65,7 @@ cd $(pwd)/anykernel
 ZIPNAME="WEEB_KERNEL_TREBLE_r$SEMAPHORE_BUILD_NUMBER.zip"
 zip -r9 $ZIPNAME * -x README.md $ZIPNAME
 
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Kernel: Weeb Kernel
-Type: <code>BETA</code>
-Device: <code>OnePlus 5/T<code>
-Compiler: <code>Clang 8.0.3</code>
-Revision: <code>$REVISION</code>
-ROM Support: <code>Treble ROMs (Custom + OxygenOS)</code>
-Compilation Time: <code>$((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds</code>
-<b>Uploading....</b>" -d chat_id=$CHAT_ID
+curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Kernel: <i>Uploading....<i>" -d chat_id=$CHAT_ID -d parse_mode=HTML
 curl -F chat_id="$CHAT_ID" -F document=@"$(pwd)/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 # Extra line here for OCD
 
