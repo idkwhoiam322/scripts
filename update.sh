@@ -1,7 +1,7 @@
 #!/bin/bash
 cd ..
 
-export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r344140/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
+export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r344140b/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Kernel: <code>Weeb Kernel</code>
 Type: <code>BETA</code>
 Device: <code>OnePlus 5/T</code>
@@ -22,7 +22,7 @@ make O=out ARCH=arm64 weeb_defconfig
 #	START, END and DIFF variables to calculate rough total compilation time!
 
 START=$(date +"%s")
-make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r344140/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
+make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r344140b/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 
 #	Success
 #	Remove any residue
@@ -49,7 +49,7 @@ cd ..
 #	Time for Custom Treble
 #
 make O=out ARCH=arm64 weebcustom_defconfig
-make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r344140/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
+make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r344140b/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 END=$(date +"%s")
 DIFF=$((END - START))
 
