@@ -14,7 +14,7 @@ mkdir -p out
 make O=out ARCH=arm64 weebcustom_defconfig
 chmod +x -R $(pwd)/
 
-make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r344140b/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"s
+make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r344140b/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 
 #	Success
 #	Preparing Kernel ZIP
