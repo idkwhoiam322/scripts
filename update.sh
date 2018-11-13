@@ -65,8 +65,8 @@ CHECKER=$(ls -l $ZIPNAME | awk '{print $5}')
 if (($((CHECKER / 1048576)) > 5));
 then
 	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build Version: <code>r$SEMAPHORE_BUILD_NUMBER</code>
-	Compilation Time: <code>$((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds</code>
-	<i>Uploading....</i>" -d chat_id=$CHAT_ID -d parse_mode=HTML
+Compilation Time: <code>$((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds</code>
+<i>Uploading....</i>" -d chat_id=$CHAT_ID -d parse_mode=HTML
 	curl -F chat_id="$CHAT_ID" -F document=@"$(pwd)/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 else
 	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="The compiler decides to scream at @idkwhoiam322" -d chat_id=$CHAT_ID	
