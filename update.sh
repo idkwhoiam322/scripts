@@ -6,6 +6,7 @@ curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Ke
 Type: <code>BETA</code>
 Device: <code>OnePlus 5/T</code>
 Compiler: <code>Clang 8.0.3</code>
+Branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>
 Latest Commit: <code>$(git log --pretty=format:'%h : %s' -1)</code>
 ROM Support: <code>Treble ROMs (Custom and OxygenOS)</code>
 <i>Build started....</i>" -d chat_id=$CHAT_ID -d parse_mode=HTML
