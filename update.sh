@@ -5,7 +5,7 @@ export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r344140b/bin/clang --version
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Kernel: <code>Weeb Kernel</code>
 Type: <code>BETA</code>
 Device: <code>OnePlus 5/T</code>
-Compiler: <code>Clang 8.0.3</code>
+Compiler: <code>Clang 8.0.4</code>
 Branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>
 Latest Commit: <code>$(git log --pretty=format:'%h : %s' -1)</code>
 ROM Support: <code>Treble ROMs (Custom and OxygenOS)</code>
