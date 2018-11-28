@@ -63,7 +63,7 @@ cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel/kernels/custom/
 
 #	Name and push zip
 cd $(pwd)/anykernel
-ZIPNAME="WEEB_KERNEL_CHRISTMAS_$(date '+%Y-%m-%d_%H:%M:%S').zip"
+ZIPNAME="WEEB_CHRISTMAS_$(date '+%Y-%m-%d_%H:%M:%S').zip"
 zip -r9 $ZIPNAME * -x README.md $ZIPNAME
 CHECKER=$(ls -l $ZIPNAME | awk '{print $5}')
 if (($((CHECKER / 1048576)) > 5));
