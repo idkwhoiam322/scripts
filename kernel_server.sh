@@ -15,8 +15,6 @@ ROM Support: <code>Treble ROMs (Custom and OxygenOS)</code>
 #	Time for OxygenOS Treble
 #
 mkdir -p out
-sudo mount -t tmpfs -o size=8g tmpfs out
-sudo chown amolele out/ -R
 make O=out ARCH=arm64 weeb_defconfig
 
 #
