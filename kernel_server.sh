@@ -12,11 +12,6 @@ ROM Support: <code>Treble ROMs (Custom and OxygenOS)</code>
 <i>Build started....</i>" -d chat_id=$CHAT_ID -d parse_mode=HTML
 #	Let's compile this mess
 #
-#	Letting scheduler figure out the best ~Raphiria
-if [[ -z "${kebabs}" ]]; then
-        countworks="$(grep -c '^processor' /proc/cpuinfo)"
-        export jobs="$((COUNT * 2))"
-fi
 #	Time for OxygenOS Treble
 #
 mkdir -p out
@@ -31,7 +26,7 @@ make O=out ARCH=arm64 weeb_defconfig
 #	START, END and DIFF variables to calculate rough total compilation time!
 
 START=$(date +"%s")
-make -j${kebabs} O=out ARCH=arm64 CC="$(pwd)/clang/clang-r344140b/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
+make -j16 O=out ARCH=arm64 CC="$(pwd)/clang/clang-r344140b/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 
 #	Success
 #	Remove any residue
@@ -58,7 +53,7 @@ cd ..
 #	Time for Custom Treble
 #
 make O=out ARCH=arm64 weebcustom_defconfig
-make -j${kebabs} O=out ARCH=arm64 CC="$(pwd)/clang/clang-r344140b/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
+make -j16 O=out ARCH=arm64 CC="$(pwd)/clang/clang-r344140b/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 END=$(date +"%s")
 DIFF=$((END - START))
 
