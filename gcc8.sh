@@ -14,7 +14,7 @@ ROM Support: <code>Treble ROMs (Custom and OxygenOS)</code>
 #	Time for OxygenOS Treble
 #
 mkdir -p out
-export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-opt-linux-android-"
+export CROSS_COMPILE="$(pwd)/gcc8/bin/aarch64-opt-linux-android-"
 make O=out ARCH=arm64 weeb_defconfig
 
 #
@@ -38,7 +38,7 @@ mkdir anykernel/kernels/oos
 mkdir anykernel/ramdisk/modules
 cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel/kernels/oos/
 cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/ramdisk/modules
-$(pwd)/gcc/bin/aarch64-opt-linux-android-strip --strip-unneeded $(pwd)/anykernel/ramdisk/modules/wlan.ko
+$(pwd)/gcc8/bin/aarch64-opt-linux-android-strip --strip-unneeded $(pwd)/anykernel/ramdisk/modules/wlan.ko
 find $(pwd)/anykernel/ramdisk/modules -name '*.ko' -exec $(pwd)/out/scripts/sign-file sha512 $(pwd)/out/certs/signing_key.pem $(pwd)/out/certs/signing_key.x509 {} \;
 
 
@@ -51,7 +51,7 @@ cd ..
 #
 #	Time for Custom Treble
 #
-CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-opt-linux-android-"
+CROSS_COMPILE="$(pwd)/gcc8/bin/aarch64-opt-linux-android-"
 make O=out ARCH=arm64 weebcustom_defconfig
 export ARCH=arm64
 make O=out -j16
