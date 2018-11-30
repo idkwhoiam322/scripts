@@ -11,11 +11,6 @@ ROM Support: <code>Treble ROMs (Custom and OxygenOS)</code>
 <i>Build started....</i>" -d chat_id=$CHAT_ID -d parse_mode=HTML
 #	Let's compile this mess
 #
-#	Letting scheduler figure out the best ~Raphiria
-if [[ -z "${kebabs}" ]]; then
-        countworks="$(grep -c '^processor' /proc/cpuinfo)"
-        export jobs="$((COUNT * 2))"
-fi
 #	Time for OxygenOS Treble
 #
 mkdir -p out
@@ -32,7 +27,7 @@ make O=out ARCH=arm64 weeb_defconfig
 
 START=$(date +"%s")
 export ARCH=arm64
-make O=out -j${kebabs}
+make O=out -j16
 
 #	Success
 #	Remove any residue
@@ -61,7 +56,7 @@ cd ..
 CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-opt-linux-android-"
 make O=out ARCH=arm64 weebcustom_defconfig
 export ARCH=arm64
-make O=out -j${kebabs}
+make O=out -j16
 END=$(date +"%s")
 DIFF=$((END - START))
 
