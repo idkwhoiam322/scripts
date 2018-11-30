@@ -7,7 +7,6 @@ cd ..
 mkdir -p out
 export CROSS_COMPILE="$(pwd)/gcc8/bin/aarch64-opt-linux-android-"
 export ARCH=arm64
-make O=out ARCH=arm64 weeb_defconfig
 
 #
 #	Compile the Kernel for OxygenOS
@@ -30,9 +29,9 @@ DIFF=$((END - START))
 
 
 cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel/kernels/custom/
-cd $(pwd)/anykernel
 mkdir anykernel/kernels
 mkdir anykernel/kernels/custom
+cd $(pwd)/anykernel
 #	We don't ned non treble anykernel
 rm -rf nontreble.sh
 mv treble.sh anykernel.sh
