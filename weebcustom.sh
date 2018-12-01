@@ -1,7 +1,7 @@
 #!/bin/bash
 cd ..
 
-export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r344140b/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
+export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r346389/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
 rm -rf out
 mkdir -p out
 
@@ -14,7 +14,7 @@ mkdir -p out
 make O=out ARCH=arm64 weebcustom_defconfig
 chmod +x -R $(pwd)/
 
-make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r344140b/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
+make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r346389/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 
 #	Success
 #	Preparing Kernel ZIP
