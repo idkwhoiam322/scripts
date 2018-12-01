@@ -28,9 +28,9 @@ DIFF=$((END - START))
 #	Preparing Kernel ZIP for Custom Treble ROMs
 
 
-cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel/kernels/custom/
 mkdir anykernel/kernels
 mkdir anykernel/kernels/custom
+cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel/kernels/custom/
 cd $(pwd)/anykernel
 #	We don't ned non treble anykernel
 rm -rf nontreble.sh
