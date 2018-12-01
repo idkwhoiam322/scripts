@@ -1,45 +1,38 @@
 #!/bin/bash
 cd ..
 
-export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r328903/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build started for branch $(git rev-parse --abbrev-ref HEAD) using Clang 7.0.2!
-Latest Commits:
-$(git log --pretty=format:'%h : %s' -{1..5})" -d chat_id=$CHAT_ID
+export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r346389/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
+curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Kernel: <code>Weeb Kernel</code>
+Type: <code>BETA</code>
+Device: <code>OnePlus 5/T</code>
+Compiler: <code>Clang 8</code>
+Branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>
+Latest Commit: <code>$(git log --pretty=format:'%h : %s' -1)</code>
+ROM Support: <code>Treble ROMs (Custom and OxygenOS)</code>
+<i>Build started....</i>" -d chat_id=$CHAT_ID -d parse_mode=HTML
 
 #	Let's compile this mess
 #
+if [[ ${SEMAPHORE_PROJECT_NAME} == *"oostest"* ]]; then 
 #	Time for OxygenOS Treble
 #
 make O=out ARCH=arm64 weeb_defconfig
 
 #
-#	Compile the Kernel
+#	Compile the Kernel for OxygenOS
 #
 
 #	START, END and DIFF variables to calculate rough total compilation time!
 
 START=$(date +"%s")
-
-#	Date and Time
-export BUILDDATE=$(date +%Y%m%d)
-export BUILDTIME=$(date +%H%M)
-
-#	Log
-export LOGFILE=log-$BUILDDATE-$BUILDTIME.txt
-
-make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r328903/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"	| tee $LOGFILE
-
-#	Failure
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Senpai, I hate to tell you but... git commit die!
-Here's logs in case building for OxygenOS failed miserably!!
-Check log file $LOGFILE" -d chat_id=$CHAT_ID
-curl -F chat_id="$CHAT_ID" -F document=@"$LOGFILE" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
+make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r346389/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 
 #	Success
+#	Remove any residue
 rm -rf $(pwd)/anykernel/ramdisk/modules/wlan.ko
 rm -rf $(pwd)/anykernel/kernels/oos/Image.gz-dtb
 
-#	Preparing Kernel ZIP
+#	Preparing Kernel ZIP for OxygenOS
 mkdir anykernel/kernels
 mkdir anykernel/kernels/oos
 mkdir anykernel/ramdisk/modules
@@ -47,46 +40,48 @@ cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel/kernels/oos/
 cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/ramdisk/modules
 $(pwd)/gcc/bin/aarch64-linux-android-strip --strip-unneeded $(pwd)/anykernel/ramdisk/modules/wlan.ko
 find $(pwd)/anykernel/ramdisk/modules -name '*.ko' -exec $(pwd)/out/scripts/sign-file sha512 $(pwd)/out/certs/signing_key.pem $(pwd)/out/certs/signing_key.x509 {} \;
+fi
 
+
+if [[ ${SEMAPHORE_PROJECT_NAME} == *"customtest"* ]]; then 
 #
 #	Time for Custom Treble
 #
-#	Date and Time - 2
-export BUILDDATE=$(date +%Y%m%d)
-export BUILDTIME=$(date +%H%M)
-
-#	Log - 2
-export LOGFILE=log-$BUILDDATE-$BUILDTIME.txt
-
 make O=out ARCH=arm64 weebcustom_defconfig
-make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r328903/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"	| tee $LOGFILE
-
-#	Failure
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Senpai, I hate to tell you but... git commit die!
-Here's logs in case building for Treble ROMs failed miserably!
-Check log file $LOGFILE" -d chat_id=$CHAT_ID
-curl -F chat_id="$CHAT_ID" -F document=@"$LOGFILE" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
-
+make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r346389/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 END=$(date +"%s")
 DIFF=$((END - START))
 
-#	Success
+#	Preparing Kernel ZIP for Custom Treble ROMs
+mkdir anykernel/kernels
 mkdir anykernel/kernels/custom
 cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel/kernels/custom/
+fi
 
-
-#	ReZIP the Kernel
+#	Name and push zip
 cd $(pwd)/anykernel
+# We don't need non treble anykernel
 rm -rf nontreble.sh
 mv treble.sh anykernel.sh
-ZIPNAME="WeebKernel-Treble_$(date '+%Y-%m-%d_%H:%M:%S').zip"
+if [[ ${SEMAPHORE_PROJECT_NAME} == *"oostest"* ]]; then 
+ZIPNAME="weebkernel_oos_r$SEMAPHORE_BUILD_NUMBER.zip"
+fi
+if [[ ${SEMAPHORE_PROJECT_NAME} == *"customtest"* ]]; then 
+ZIPNAME="weebkernel_custom_r$SEMAPHORE_BUILD_NUMBER.zip"
+fi
 zip -r9 $ZIPNAME * -x README.md $ZIPNAME
+CHECKER=$(ls -l $ZIPNAME | awk '{print $5}')
+if (($((CHECKER / 1048576)) > 5));
+then
+	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build Version: <code>r$SEMAPHORE_BUILD_NUMBER</code>
+Compilation Time: <code>$((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds</code>
+<i>Uploading....</i>" -d chat_id=$CHAT_ID -d parse_mode=HTML
+	curl -F chat_id="$CHAT_ID" -F document=@"$(pwd)/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
+else
+	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="The compiler decides to scream at @idkwhoiam322" -d chat_id=$CHAT_ID	
+fi;
+# Extra line here for OCD
 
-#	Time to push the Kernel ZIP
-cd ..
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Weebu Karuneru bureedo successu Oniisama!
-The build took $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds to compile successfully!!
-Uploading Kernel zip file here now!! 
-	~(^.^)~" -d chat_id=$CHAT_ID
-curl -F chat_id="$CHAT_ID" -F document=@"$(pwd)/anykernel/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="As always, remember to only flash the pinned builds! If you're unsure which one to pick, use clang! :)" -d chat_id=$CHAT_ID
+# Oh there were 2 lines
+# Oh 3
+# Ok I'll stop here
