@@ -14,19 +14,14 @@ ROM Support: <code>Treble ROMs (Custom and OxygenOS)</code>
 #	Let's compile this mess
 #
 if [[ ${SEMAPHORE_PROJECT_NAME} == *"oostest"* ]]; then 
+#
 #	Time for OxygenOS Treble
 #
-make O=out ARCH=arm64 weeb_defconfig
-
-#
-#	Compile the Kernel for OxygenOS
-#
-
-#	START, END and DIFF variables to calculate rough total compilation time!
-
 START=$(date +"%s")
+make O=out ARCH=arm64 weeb_defconfig
 make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r346389/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
-
+END=$(date +"%s")
+DIFF=$((END - START))
 #	Success
 #	Remove any residue
 rm -rf $(pwd)/anykernel/ramdisk/modules/wlan.ko
@@ -47,6 +42,7 @@ if [[ ${SEMAPHORE_PROJECT_NAME} == *"customtest"* ]]; then
 #
 #	Time for Custom Treble
 #
+START=$(date +"%s")
 make O=out ARCH=arm64 weebcustom_defconfig
 make -j$(nproc --all) O=out ARCH=arm64 CC="$(pwd)/clang/clang-r346389/bin/clang" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 END=$(date +"%s")
