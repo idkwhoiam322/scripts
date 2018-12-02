@@ -2,6 +2,8 @@
 cd ..
 
 export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r346389/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
+
+if [[ ${SEMAPHORE_PROJECT_NAME} == *"oostest"* ]]; then 
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Kernel: <code>Weeb Kernel</code>
 Type: <code>BETA</code>
 Device: <code>OnePlus 5/T</code>
@@ -13,7 +15,6 @@ ROM Support: <code>Treble ROMs (Custom and OxygenOS)</code>
 
 #	Let's compile this mess
 #
-if [[ ${SEMAPHORE_PROJECT_NAME} == *"oostest"* ]]; then 
 #
 #	Time for OxygenOS Treble
 #
