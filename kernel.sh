@@ -13,6 +13,12 @@ Latest Commit: <code>$(git log --pretty=format:'%h : %s' -1)</code>
 ROM Support: <code>Treble ROMs (Custom and OxygenOS)</code>
 <i>Build started....</i>" -d chat_id=$CHAT_ID -d parse_mode=HTML
 
+# tmpfs bes
+	mkdir -pv out
+	sudo mount -t tmpfs -o size=4g tmpfs out
+	sudo chown "${USER}" out/ -R
+
+
 #	Let's compile this mess
 #
 #
