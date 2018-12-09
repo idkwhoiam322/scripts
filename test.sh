@@ -22,14 +22,14 @@ if [[ -z "${KEBABS}" ]]; then
 	export KEBABS="$((COUNT * 2))"
 fi
 
-# tmpfs bes
+export ARCH=arm64
+
+if [[ ${COMPILER} == *"CLANG"* ]]; then
+	# tmpfs bes
 	mkdir -pv out
 	sudo mount -t tmpfs -o size=4g tmpfs out
 	sudo chown "${USER}" out/ -R
-
-export ARCH=arm64
-
-if [[ ${COMPILER} == *"CLANG"* ]]; then 
+	
 	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r346389/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
 	export STRIP=$(pwd)/gcc/bin/aarch64-linux-android-strip
 	export CC="$(pwd)/clang/clang-r346389/bin/clang"
