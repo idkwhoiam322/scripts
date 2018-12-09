@@ -30,9 +30,9 @@ if [[ ${COMPILER} == *"CLANG"* ]]; then
 	sudo mount -t tmpfs -o size=4g tmpfs out
 	sudo chown "${USER}" out/ -R
 	
-	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r346389/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
+	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r346389b/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
 	export STRIP=$(pwd)/gcc/bin/aarch64-linux-android-strip
-	export CC="$(pwd)/clang/clang-r346389/bin/clang"
+	export CC="$(pwd)/clang/clang-r346389b/bin/clang"
 	export CLANG_TRIPLE=aarch64-linux-gnu-
 	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 
