@@ -25,10 +25,7 @@ fi
 export ARCH=arm64
 
 if [[ ${COMPILER} == *"CLANG"* ]]; then
-	# tmpfs bes
-	mkdir -pv out
-	sudo mount -t tmpfs -o size=4g tmpfs out
-	sudo chown "${USER}" out/ -R
+
 	
 	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r346389b/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
 	export STRIP=$(pwd)/gcc/bin/aarch64-linux-android-strip
