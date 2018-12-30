@@ -30,7 +30,7 @@ if [[ ${COMPILER} == *"CLANG"* ]]; then
 	export CLANG_TRIPLE=aarch64-linux-gnu-
 	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 
-		if [[ ${SEMAPHORE_PROJECT_NAME} == *"oostest"* ]]; then 
+		if [[ "$@" =~ "oos"* ]]; then 
 			export DEFCONFIG=weeb_defconfig
 			export BUILDFOR=oos
 			export ZIPNAME="weebkernel_oos_v2r$SEMAPHORE_BUILD_NUMBER.zip"
@@ -38,7 +38,7 @@ if [[ ${COMPILER} == *"CLANG"* ]]; then
 			mkdir anykernel/ramdisk/modules
 		fi
 
-		if [[ ${SEMAPHORE_PROJECT_NAME} == *"customtest"* ]]; then
+		if [[ "$@" =~ "custom"* ]]; then
 			export DEFCONFIG=weebcustom_defconfig
 			export BUILDFOR=custom
 			export ZIPNAME="weebkernel_custom_v2r$SEMAPHORE_BUILD_NUMBER.zip"
