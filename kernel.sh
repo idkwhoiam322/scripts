@@ -10,11 +10,8 @@ else
 fi
 # remove any old residue
 rm -rf $(pwd)/anykernel/ramdisk/modules/wlan.ko
-rm -rf $(pwd)/anykernel/kernels/oos/Image.gz-dtb
-rm -rf $(pwd)/anykernel/kernels/custom/Image.gz-dtb
+rm -rf $(pwd)/anykernel/Image.gz-dtb
 
-# Make common kernel folder
-mkdir anykernel/kernels
 
 # How much kebabs we need? Kanged from @raphielscape :)
 if [[ -z "${KEBABS}" ]]; then
@@ -27,16 +24,16 @@ export ARCH=arm64
 if [[ ${COMPILER} == *"CLANG"* ]]; then
 
 	
-	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r346389b/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
+	export KBUILD_COMPILER_STRING="$($(pwd)/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
 	export STRIP=$(pwd)/gcc/bin/aarch64-linux-android-strip
-	export CC="$(pwd)/clang/clang-r346389b/bin/clang"
+	export CC="$(pwd)/clang/bin/clang"
 	export CLANG_TRIPLE=aarch64-linux-gnu-
 	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 
 		if [[ ${SEMAPHORE_PROJECT_NAME} == *"oostest"* ]]; then 
 			export DEFCONFIG=weeb_defconfig
 			export BUILDFOR=oos
-			export ZIPNAME="weebkernel_oos_r$SEMAPHORE_BUILD_NUMBER.zip"
+			export ZIPNAME="weebkernel_oos_v2r$SEMAPHORE_BUILD_NUMBER.zip"
 			mkdir anykernel/kernels/oos
 			mkdir anykernel/ramdisk/modules
 		fi
@@ -44,7 +41,7 @@ if [[ ${COMPILER} == *"CLANG"* ]]; then
 		if [[ ${SEMAPHORE_PROJECT_NAME} == *"customtest"* ]]; then
 			export DEFCONFIG=weebcustom_defconfig
 			export BUILDFOR=custom
-			export ZIPNAME="weebkernel_custom_r$SEMAPHORE_BUILD_NUMBER.zip"
+			export ZIPNAME="weebkernel_custom_v2r$SEMAPHORE_BUILD_NUMBER.zip"
 			mkdir anykernel/kernels/custom
 		fi
 fi
@@ -77,23 +74,22 @@ DIFF=$((END - START))
 
 # prepare zip for oos
 if [[ ${BUILDFOR} == *"oos"* ]]; then
-	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel/kernels/oos/
+	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
 	cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/ramdisk/modules
 	$STRIP --strip-unneeded $(pwd)/anykernel/ramdisk/modules/wlan.ko
-	find $(pwd)/anykernel/ramdisk/modules -name '*.ko' -exec $(pwd)/out/scripts/sign-file sha512 $(pwd)/out/certs/signing_key.pem $(pwd)/out/certs/signing_key.x509 {} \;
 fi
 
-
+# prepare zip for cusotm
 if [[ ${BUILDFOR} == *"custom"* ]]; then
-	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel/kernels/custom/
+	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
+	cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/ramdisk/modules
+	$STRIP --strip-unneeded $(pwd)/anykernel/ramdisk/modules/wlan.ko
 fi
 
 
 
 # POST ZIP OR FAILURE
 cd anykernel
-rm -rf nontreble.sh
-mv treble.sh anykernel.sh
 zip -r9 $ZIPNAME * -x README.md $ZIPNAME
 CHECKER=$(ls -l $ZIPNAME | awk '{print $5}')
 
