@@ -62,7 +62,7 @@ Compiler: <code>$COMPILER</code>
 Branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>
 Latest Commit: <code>$(git log --pretty=format:'%h : %s' -1)</code>
 ROM Support: <code>$BUILDFOR</code>
-<i>Build started....</i>" -d chat_id=$CHAT_ID -d parse_mode=HTML
+<i>Build started on semaphore_ci....</i>" -d chat_id=$CHAT_ID -d parse_mode=HTML
 
 # compilation
 START=$(date +"%s")
