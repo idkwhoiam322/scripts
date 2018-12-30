@@ -34,7 +34,6 @@ if [[ ${COMPILER} == *"CLANG"* ]]; then
 			export DEFCONFIG=weeb_defconfig
 			export BUILDFOR=oos
 			export ZIPNAME="weebkernel_oos_v2r$SEMAPHORE_BUILD_NUMBER.zip"
-			mkdir anykernel/kernels/oos
 			mkdir anykernel/ramdisk/modules
 		fi
 
@@ -42,7 +41,7 @@ if [[ ${COMPILER} == *"CLANG"* ]]; then
 			export DEFCONFIG=weebcustom_defconfig
 			export BUILDFOR=custom
 			export ZIPNAME="weebkernel_custom_v2r$SEMAPHORE_BUILD_NUMBER.zip"
-			mkdir anykernel/kernels/custom
+			mkdir anykernel/ramdisk/modules
 		fi
 fi
 
@@ -52,7 +51,7 @@ if [[ ${COMPILER} == *"GCC"* ]]; then
 	export DEFCONFIG=weebcustom_defconfig
 	export BUILDFOR=custom
 	export ZIPNAME="Custom_GCC_r$SEMAPHORE_BUILD_NUMBER.zip"
-	mkdir anykernel/kernels/custom
+	mkdir anykernel/ramdisk/modules
 fi
 
 # Telegram Post to CI channel
