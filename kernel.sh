@@ -9,7 +9,6 @@ else
 	export COMPILER=CLANG
 fi
 # remove any old residue
-rm -rf $(pwd)/anykernel/ramdisk/modules/wlan.ko
 rm -rf $(pwd)/anykernel/Image.gz-dtb
 
 
@@ -25,7 +24,6 @@ if [[ ${COMPILER} == *"CLANG"* ]]; then
 
 	
 	export KBUILD_COMPILER_STRING="$($(pwd)/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
-	export STRIP=$(pwd)/gcc/bin/aarch64-linux-android-strip
 	export CC="$(pwd)/clang/bin/clang"
 	export CLANG_TRIPLE=aarch64-linux-gnu-
 	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
@@ -34,20 +32,17 @@ if [[ ${COMPILER} == *"CLANG"* ]]; then
 			export DEFCONFIG=weeb_defconfig
 			export BUILDFOR=oos
 			export ZIPNAME="weebkernel_oos_v2.0r$SEMAPHORE_BUILD_NUMBER.zip"
-			mkdir anykernel/ramdisk/modules
 		fi
 
 		if [[ "$@" =~ "custom"* ]]; then
 			export DEFCONFIG=weebcustom_defconfig
 			export BUILDFOR=custom
 			export ZIPNAME="weebkernel_custom_v2.0r$SEMAPHORE_BUILD_NUMBER.zip"
-			mkdir anykernel/ramdisk/modules
 		fi
 fi
 
 if [[ ${COMPILER} == *"GCC"* ]]; then
 	export CROSS_COMPILE=$(pwd)/gcc/bin/aarch64-opt-linux-android-
-	export STRIP=$(pwd)/gcc/bin/aarch64-opt-linux-android-strip
 	export DEFCONFIG=weebcustom_defconfig
 	export BUILDFOR=custom
 	export ZIPNAME="Custom_GCC_r$SEMAPHORE_BUILD_NUMBER.zip"
@@ -74,18 +69,12 @@ DIFF=$((END - START))
 # prepare zip for oos
 if [[ ${BUILDFOR} == *"oos"* ]]; then
 	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
-	cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/ramdisk/modules
-	$STRIP --strip-unneeded $(pwd)/anykernel/ramdisk/modules/wlan.ko
 fi
 
 # prepare zip for cusotm
 if [[ ${BUILDFOR} == *"custom"* ]]; then
 	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
-	cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/ramdisk/modules
-	$STRIP --strip-unneeded $(pwd)/anykernel/ramdisk/modules/wlan.ko
 fi
-
-
 
 # POST ZIP OR FAILURE
 cd anykernel
