@@ -21,8 +21,6 @@ fi
 export ARCH=arm64
 
 if [[ ${COMPILER} == *"CLANG"* ]]; then
-
-	
 	export KBUILD_COMPILER_STRING="$($(pwd)/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
 	export CC="$(pwd)/clang/bin/clang"
 	export CLANG_TRIPLE=aarch64-linux-gnu-
@@ -42,11 +40,19 @@ if [[ ${COMPILER} == *"CLANG"* ]]; then
 fi
 
 if [[ ${COMPILER} == *"GCC"* ]]; then
-	export CROSS_COMPILE=$(pwd)/gcc/bin/aarch64-opt-linux-android-
-	export DEFCONFIG=weebcustom_defconfig
-	export BUILDFOR=custom
-	export ZIPNAME="Custom_GCC_r$SEMAPHORE_BUILD_NUMBER.zip"
-	mkdir anykernel/ramdisk/modules
+	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-opt-linux-android-"
+
+		if [[ "$@" =~ "oos"* ]]; then 
+			export DEFCONFIG=weeb_defconfig
+			export BUILDFOR=oos
+			export ZIPNAME="weebkernel_oos_v2.0r$SEMAPHORE_BUILD_NUMBER.zip"
+		fi
+
+		if [[ "$@" =~ "custom"* ]]; then		
+			export DEFCONFIG=weebcustom_defconfig
+			export BUILDFOR=custom
+			export ZIPNAME="weebkernel_custom_v2.0r$SEMAPHORE_BUILD_NUMBER.zip"
+		fi 
 fi
 
 # Telegram Post to CI channel
