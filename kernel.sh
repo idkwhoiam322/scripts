@@ -22,6 +22,7 @@ export ARCH=arm64
 
 if [[ ${COMPILER} == *"CLANG"* ]]; then
 	export KBUILD_COMPILER_STRING="$($(pwd)/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
+	export STRIP="$(pwd)/gcc/bin/aarch64-linux-android-strip"
 	export CC="$(pwd)/clang/bin/clang"
 	export CLANG_TRIPLE=aarch64-linux-gnu-
 	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
@@ -41,6 +42,7 @@ fi
 
 if [[ ${COMPILER} == *"GCC"* ]]; then
 	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-opt-linux-android-"
+	export STRIP="$(pwd)/gcc/bin/aarch64-opt-linux-android-strip"
 
 		if [[ "$@" =~ "oos"* ]]; then 
 			export DEFCONFIG=weeb_defconfig
@@ -75,6 +77,13 @@ DIFF=$((END - START))
 # prepare zip for oos
 if [[ ${BUILDFOR} == *"oos"* ]]; then
 	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
+	mkdir anykernel/modules
+	mkdir anykernel/modules/vendor
+	mkdir anykernel/modules/vendor/lib
+	mkdir anykernel/modules/vendor/lib/modules
+	$STRIP --strip-unneeded $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko
+	cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/modules/vendor/lib/modules
+	mv $(pwd)/anykernel/modules/vendor/lib/modules/wlan.ko $(pwd)/anykernel/modules/vendor/lib/modules/qca_cld3_wlan.ko
 fi
 
 # prepare zip for cusotm
