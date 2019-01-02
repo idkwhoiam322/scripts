@@ -2,7 +2,7 @@
 cd ..
 # PREPPING
 
-# Set COMPILERE
+# Set COMPILER
 if [[ "$@" =~ "gcc" ]]; then
 	export COMPILER=GCC
 else
