@@ -41,8 +41,8 @@ if [[ ${COMPILER} == *"CLANG"* ]]; then
 fi
 
 if [[ ${COMPILER} == *"GCC"* ]]; then
-	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-gnu-"
-	export STRIP="$(pwd)/gcc/bin/aarch64-linux-gnu-strip"
+	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-opt-linux-android-"
+	export STRIP="$(pwd)/gcc/bin/aarch64-opt-linux-android-strip"
 
 		if [[ "$@" =~ "oos"* ]]; then 
 			export DEFCONFIG=weeb_defconfig
