@@ -21,9 +21,9 @@ fi
 export ARCH=arm64
 
 if [[ ${COMPILER} == *"CLANG"* ]]; then
-	export KBUILD_COMPILER_STRING="$($(pwd)/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
+	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r346389b/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
 	export STRIP=$(pwd)/gcc/bin/aarch64-linux-android-strip
-	export CC="$(pwd)/clang/bin/clang"
+	export CC="$(pwd)/clang/clang-r346389b/bin/clang"
 	export CLANG_TRIPLE=aarch64-linux-gnu-
 	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 
