@@ -65,7 +65,9 @@ Compiler: <code>$COMPILER</code>
 Branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>
 Latest Commit: <code>$(git log --pretty=format:'%h : %s' -1)</code>
 ROM Support: <code>$BUILDFOR</code>
-<i>Build started on semaphore_ci....</i>" -d chat_id=$CHAT_ID -d parse_mode=HTML
+<i>Build started on semaphore_ci....</i>" -d chat_id=$CI_CHANNEL_ID -d parse_mode=HTML
+
+curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="<code> // Compilation Started on Semaphore CI // </code>" -d chat_id=$KERNEL_CHAT_ID -d parse_mode=HTML
 
 # compilation
 START=$(date +"%s")
@@ -96,11 +98,9 @@ zip -r9 $ZIPNAME * -x README.md $ZIPNAME
 CHECKER=$(ls -l $ZIPNAME | awk '{print $5}')
 
 if (($((CHECKER / 1048576)) > 5)); then
-	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build Version: <code>r$SEMAPHORE_BUILD_NUMBER</code>
-Compilation Time: <code>$((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds</code>
-ROM Support: <code>$BUILDFOR</code>
-<i>Uploading....</i>" -d chat_id=$CHAT_ID -d parse_mode=HTML
-	curl -F chat_id="$CHAT_ID" -F document=@"$(pwd)/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
+	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build compiled successfully in $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds for $BUILDFOR" -d chat_id=$KERNEL_CHAT_ID -d parse_mode=HTML
+	curl -F chat_id="$CI_CHANNEL_ID" -F document=@"$(pwd)/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 else
-	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="The compiler decides to scream at @idkwhoiam322" -d chat_id=$CHAT_ID	
+	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="The compiler decides to scream at @idkwhoiam322" -d chat_id=$KERNEL_CHAT_ID
+	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build for ${BUILDFOR} throwing err0rs yO" -d chat_id=$CI_CHANNEL_ID	
 fi
