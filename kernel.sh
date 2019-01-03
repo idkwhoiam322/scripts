@@ -58,14 +58,15 @@ if [[ ${COMPILER} == *"GCC"* ]]; then
 fi
 
 # Telegram Post to CI channel
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Kernel: <code>Weeb Kernel</code>
+if [[ "$@" =~ "post"* ]]; then 
+	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Kernel: <code>Weeb Kernel</code>
 Type: <code>BETA</code>
 Device: <code>OnePlus 5/T</code>
 Compiler: <code>$COMPILER</code>
 Branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>
 Latest Commit: <code>$(git log --pretty=format:'%h : %s' -1)</code>
-ROM Support: <code>$BUILDFOR</code>
 <i>Build started on semaphore_ci....</i>" -d chat_id=$CI_CHANNEL_ID -d parse_mode=HTML
+fi
 
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="<code> // Compilation Started on Semaphore CI // </code>" -d chat_id=$KERNEL_CHAT_ID -d parse_mode=HTML
 
@@ -101,6 +102,6 @@ if (($((CHECKER / 1048576)) > 5)); then
 	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build compiled successfully in $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds for $BUILDFOR" -d chat_id=$KERNEL_CHAT_ID -d parse_mode=HTML
 	curl -F chat_id="$CI_CHANNEL_ID" -F document=@"$(pwd)/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 else
-	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="The compiler decides to scream at @idkwhoiam322" -d chat_id=$KERNEL_CHAT_ID
+	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="The compiler decides to scream at @idkwhoiam322 for ruining ${BUILDFOR}" -d chat_id=$KERNEL_CHAT_ID
 	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build for ${BUILDFOR} throwing err0rs yO" -d chat_id=$CI_CHANNEL_ID	
 fi
