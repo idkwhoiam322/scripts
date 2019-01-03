@@ -2,6 +2,19 @@
 cd ..
 # PREPPING
 
+# Set Kernel Info
+export VERA="-weeb"
+export VERB="$(date +%Y%m%d)-$(git rev-parse --verify --short=${NUM} HEAD)"
+VERSION="$VERA-$VERB"
+
+# Export User and Host
+export KBUILD_BUILD_USER=idkwhoiam322
+export KBUILD_BUILD_HOST=Kebabs
+
+# Export versions
+export KBUILD_BUILD_VERSION=1
+export LOCALVERSION=`echo $VERSION`
+
 # Set COMPILER
 if [[ "$@" =~ "gcc" ]]; then
 	export COMPILER=GCC
