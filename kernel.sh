@@ -43,13 +43,13 @@ if [[ ${COMPILER} == *"CLANG"* ]]; then
 		if [[ "$@" =~ "oos"* ]]; then 
 			export DEFCONFIG=weeb_defconfig
 			export BUILDFOR=oos
-			export ZIPNAME="weebkernel_oos_v2.0r$SEMAPHORE_BUILD_NUMBER.zip"
+			export ZIPNAME="weeb-oos-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
 		fi
 
 		if [[ "$@" =~ "custom"* ]]; then
 			export DEFCONFIG=weebcustom_defconfig
 			export BUILDFOR=custom
-			export ZIPNAME="weebkernel_custom_v2.0r$SEMAPHORE_BUILD_NUMBER.zip"
+			export ZIPNAME="weeb-custom-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
 		fi
 fi
 
