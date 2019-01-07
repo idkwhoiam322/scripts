@@ -93,6 +93,10 @@ DIFF=$((END - START))
 # prepare zip for oos
 if [[ ${BUILDFOR} == *"oos"* ]]; then
 	mkdir anykernel/ramdisk/modules
+	rm -rf anykernel/ramdisk/init.qcomcustom.rc
+	rm -rf anykernel/ramdisk/init.weebcustom.sh
+	mv anykernel/ramdisk/init.qcomoos.rc anykernel/ramdisk/init.qcom.rc
+	mv anykernel/ramdisk/init.weeboos.sh anykernel/ramdisk/init.weeb.sh
 	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
 	cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/ramdisk/modules
 	$STRIP --strip-unneeded $(pwd)/anykernel/ramdisk/modules/wlan.ko
@@ -100,10 +104,13 @@ fi
 
 # prepare zip for cusotm
 if [[ ${BUILDFOR} == *"custom"* ]]; then
-	mkdir anykernel/ramdisk/modules
+	rm -rf anykernel/ramdisk/init.supolicy.sh
+	rm -rf anykernel/patch
+	rm -rf anykernel/ramdisk/init.qcomoos.rc
+	rm -rf anykernel/ramdisk/init.weeboos.sh
+	mv anykernel/ramdisk/init.qcomcustom.rc anykernel/ramdisk/init.qcom.rc
+	mv anykernel/ramdisk/init.weebcustom.sh anykernel/ramdisk/init.weeb.sh
 	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
-	cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/ramdisk/modules
-	$STRIP --strip-unneeded $(pwd)/anykernel/ramdisk/modules/wlan.ko
 fi
 
 # POST ZIP OR FAILURE
