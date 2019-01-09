@@ -4,7 +4,8 @@ cd ..
 
 # Set Kernel Info
 export VERA="-weeb"
-export VERB="$(date +%Y%m%d)-$(git rev-parse --verify --short=${NUM} HEAD)"
+export VERB_SET=$(git rev-parse HEAD)
+export VERB="$(date +%Y%m%d)-$(echo ${VERB_SET:0:4})"
 VERSION="$VERA-$VERB"
 
 # Export User and Host
@@ -18,6 +19,7 @@ export LOCALVERSION=`echo $VERSION`
 # Set COMPILER
 if [[ "$@" =~ "gcc" ]]; then
 	export COMPILER=GCC
+	
 else
 	export COMPILER=CLANG
 fi
@@ -43,13 +45,11 @@ if [[ ${COMPILER} == *"CLANG"* ]]; then
 		if [[ "$@" =~ "oos"* ]]; then 
 			export DEFCONFIG=weeb_defconfig
 			export BUILDFOR=oos
-			export ZIPNAME="weeb-oos-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
 		fi
 
 		if [[ "$@" =~ "custom"* ]]; then
 			export DEFCONFIG=weebcustom_defconfig
 			export BUILDFOR=custom
-			export ZIPNAME="weeb-custom-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
 		fi
 fi
 
@@ -60,15 +60,15 @@ if [[ ${COMPILER} == *"GCC"* ]]; then
 		if [[ "$@" =~ "oos"* ]]; then 
 			export DEFCONFIG=weeb_defconfig
 			export BUILDFOR=oos
-			export ZIPNAME="weebkernel_oos_v2.0r$SEMAPHORE_BUILD_NUMBER.zip"
 		fi
 
 		if [[ "$@" =~ "custom"* ]]; then		
 			export DEFCONFIG=weebcustom_defconfig
 			export BUILDFOR=custom
-			export ZIPNAME="weebkernel_custom_v2.0r$SEMAPHORE_BUILD_NUMBER.zip"
 		fi 
 fi
+
+export ZIPNAME="weeb-${COMPILER,,}-$oos-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
 
 # Telegram Post to CI channel
 if [[ "$@" =~ "post"* ]]; then 
