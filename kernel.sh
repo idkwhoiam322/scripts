@@ -68,7 +68,7 @@ if [[ ${COMPILER} == *"GCC"* ]]; then
 		fi 
 fi
 
-export ZIPNAME="weeb-${COMPILER,,}-${oos}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
+export ZIPNAME="weeb-${COMPILER,,}-${BUILDFOR}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
 
 # Telegram Post to CI channel
 if [[ "$@" =~ "post"* ]]; then 
