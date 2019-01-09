@@ -6,7 +6,7 @@ cd ..
 export VERA="-weeb"
 export VERB_SET=$(git rev-parse HEAD)
 export VERB="$(date +%Y%m%d)-$(echo ${VERB_SET:0:4})"
-VERSION="$VERA-$VERB"
+VERSION="${VERA}-${VERB}"
 
 # Export User and Host
 export KBUILD_BUILD_USER=idkwhoiam322
@@ -14,7 +14,7 @@ export KBUILD_BUILD_HOST=Kebabs
 
 # Export versions
 export KBUILD_BUILD_VERSION=1
-export LOCALVERSION=`echo $VERSION`
+export LOCALVERSION=`echo ${VERSION}`
 
 # Set COMPILER
 if [[ "$@" =~ "gcc" ]]; then
@@ -68,20 +68,20 @@ if [[ ${COMPILER} == *"GCC"* ]]; then
 		fi 
 fi
 
-export ZIPNAME="weeb-${COMPILER,,}-$oos-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
+export ZIPNAME="weeb-${COMPILER,,}-${oos}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
 
 # Telegram Post to CI channel
 if [[ "$@" =~ "post"* ]]; then 
-	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Kernel: <code>Weeb Kernel</code>
+	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Kernel: <code>Weeb Kernel</code>
 Type: <code>BETA</code>
 Device: <code>OnePlus 5/T</code>
-Compiler: <code>$COMPILER</code>
+Compiler: <code>${COMPILER}</code>
 Branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>
 Latest Commit: <code>$(git log --pretty=format:'%h : %s' -1)</code>
-<i>Build started on semaphore_ci....</i>" -d chat_id=$CI_CHANNEL_ID -d parse_mode=HTML
+<i>Build started on semaphore_ci....</i>" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
 fi
 
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="<code> // Compilation Started on Semaphore CI // </code>" -d chat_id=$KERNEL_CHAT_ID -d parse_mode=HTML
+curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="<code> // Compilation Started on Semaphore CI // </code>" -d chat_id=${KERNEL_CHAT_ID} -d parse_mode=HTML
 
 # compilation
 START=$(date +"%s")
@@ -99,7 +99,7 @@ if [[ ${BUILDFOR} == *"oos"* ]]; then
 	mv anykernel/ramdisk/init.weeboos.sh anykernel/ramdisk/init.weeb.sh
 	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
 	cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/ramdisk/modules
-	$STRIP --strip-unneeded $(pwd)/anykernel/ramdisk/modules/wlan.ko
+	${STRIP} --strip-unneeded $(pwd)/anykernel/ramdisk/modules/wlan.ko
 fi
 
 # prepare zip for cusotm
@@ -115,13 +115,13 @@ fi
 
 # POST ZIP OR FAILURE
 cd anykernel
-zip -r9 $ZIPNAME * -x README.md $ZIPNAME
-CHECKER=$(ls -l $ZIPNAME | awk '{print $5}')
+zip -r9 ${ZIPNAME} * -x README.md ${ZIPNAME}
+CHECKER=$(ls -l ${ZIPNAME} | awk '{print $5}')
 
 if (($((CHECKER / 1048576)) > 5)); then
-	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build compiled successfully in $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds for $BUILDFOR" -d chat_id=$KERNEL_CHAT_ID -d parse_mode=HTML
-	curl -F chat_id="$CI_CHANNEL_ID" -F document=@"$(pwd)/$ZIPNAME" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
+	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build compiled successfully in $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds for ${BUILDFOR}" -d chat_id=${KERNEL_CHAT_ID} -d parse_mode=HTML
+	curl -F chat_id="${CI_CHANNEL_ID}" -F document=@"$(pwd)/${ZIPNAME}" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
 else
-	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="The compiler decides to scream at @idkwhoiam322 for ruining ${BUILDFOR}" -d chat_id=$KERNEL_CHAT_ID
-	curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Build for ${BUILDFOR} throwing err0rs yO" -d chat_id=$CI_CHANNEL_ID	
+	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="The compiler decides to scream at @idkwhoiam322 for ruining ${BUILDFOR}" -d chat_id=${KERNEL_CHAT_ID}
+	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build for ${BUILDFOR} throwing err0rs yO" -d chat_id=${CI_CHANNEL_ID}
 fi
