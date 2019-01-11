@@ -8,7 +8,7 @@ git clone https://github.com/whoknowswhoiam/weebanykernel2.git -b pie anykernel
 
 
 if [[ "$@" =~ "gcc" ]]; then
-	git clone git://github.com/krasCGQ/aarch64-linux-android -b opt-gnu-8.x --depth=1 gcc
+	git clone https://github.com/RaphielGang/aarch64-raph-linux-android.git gcc
 else
 	git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 --depth=1 gcc
 	git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 --depth=1 clang
