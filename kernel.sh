@@ -51,6 +51,11 @@ if [[ ${COMPILER} == *"CLANG"* ]]; then
 			export DEFCONFIG=weebcustom_defconfig
 			export BUILDFOR=custom
 		fi
+
+		if [[ "$@" =~ "omni"* ]]; then
+			export DEFCONFIG=weebomni_defconfig
+			export BUILDFOR=omni
+		fi
 fi
 
 if [[ ${COMPILER} == *"GCC"* ]]; then
@@ -65,6 +70,11 @@ if [[ ${COMPILER} == *"GCC"* ]]; then
 		if [[ "$@" =~ "custom"* ]]; then		
 			export DEFCONFIG=weebcustom_defconfig
 			export BUILDFOR=custom
+		fi
+
+		if [[ "$@" =~ "omni"* ]]; then
+			export DEFCONFIG=weebomni_defconfig
+			export BUILDFOR=omni
 		fi 
 fi
 
@@ -102,13 +112,24 @@ if [[ ${BUILDFOR} == *"oos"* ]]; then
 	${STRIP} --strip-unneeded $(pwd)/anykernel/modules/vendor/lib/modules/qca_cld3_wlan.ko
 fi
 
-# prepare zip for cusotm
+# prepare zip for custom
 if [[ ${BUILDFOR} == *"custom"* ]]; then
 	rm -rf anykernel/ramdisk/init.qcomoos.rc
 	rm -rf anykernel/ramdisk/init.weeboos.sh
 	mv anykernel/ramdisk/init.qcomcustom.rc anykernel/ramdisk/init.qcom.rc
 	mv anykernel/ramdisk/init.weebcustom.sh anykernel/ramdisk/init.weeb.sh
 	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
+fi
+
+# prepare zip for omni
+if [[ ${BUILDFOR} == *"omni"* ]]; then
+	mkdir anykernel/modules
+	mkdir anykernel/modules/system
+	mkdir anykernel/modules/system/lib
+	mkdir anykernel/modules/system/lib/modules
+	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
+	cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/modules/system/lib/modules
+	${STRIP} --strip-unneeded $(pwd)/anykernel/modules/system/lib/modules/wlan.ko
 fi
 
 # POST ZIP OR FAILURE
