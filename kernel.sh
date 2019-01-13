@@ -19,13 +19,18 @@ export LOCALVERSION=`echo ${VERSION}`
 # Set COMPILER
 if [[ "$@" =~ "gcc" ]]; then
 	export COMPILER=GCC
+	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-gnu-"
+	export STRIP="$(pwd)/gcc/bin/aarch64-linux-gnu-strip"
 	
 else
 	export COMPILER=CLANG
+	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r346389c/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
+	export STRIP=$(pwd)/gcc/bin/aarch64-linux-android-strip
+	export CC="$(pwd)/clang/clang-r346389c/bin/clang"
+	export CLANG_TRIPLE=aarch64-linux-gnu-
+	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 fi
-# remove any old residue
-rm -rf $(pwd)/anykernel/ramdisk/modules/wlan.ko
-rm -rf $(pwd)/anykernel/Image.gz-dtb
+export ARCH=arm64 && export SUBARCH=arm64
 
 # How much kebabs we need? Kanged from @raphielscape :)
 if [[ -z "${KEBABS}" ]]; then
@@ -33,39 +38,15 @@ if [[ -z "${KEBABS}" ]]; then
 	export KEBABS="$((COUNT * 2))"
 fi
 
-export ARCH=arm64
 
-if [[ ${COMPILER} == *"CLANG"* ]]; then
-	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r346389c/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
-	export STRIP=$(pwd)/gcc/bin/aarch64-linux-android-strip
-	export CC="$(pwd)/clang/clang-r346389c/bin/clang"
-	export CLANG_TRIPLE=aarch64-linux-gnu-
-	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
-
-		if [[ "$@" =~ "oos"* ]]; then 
-			export DEFCONFIG=weeb_defconfig
-			export BUILDFOR=oos
-		fi
-
-		if [[ "$@" =~ "custom"* ]]; then
-			export DEFCONFIG=weebcustom_defconfig
-			export BUILDFOR=custom
-		fi
+if [[ "$@" =~ "oos"* ]]; then 
+	export DEFCONFIG=weeb_defconfig
+	export BUILDFOR=oos
 fi
 
-if [[ ${COMPILER} == *"GCC"* ]]; then
-	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-gnu-"
-	export STRIP="$(pwd)/gcc/bin/aarch64-linux-gnu-strip"
-
-		if [[ "$@" =~ "oos"* ]]; then 
-			export DEFCONFIG=weeb_defconfig
-			export BUILDFOR=oos
-		fi
-
-		if [[ "$@" =~ "custom"* ]]; then		
-			export DEFCONFIG=weebcustom_defconfig
-			export BUILDFOR=custom
-		fi
+if [[ "$@" =~ "custom"* ]]; then
+	export DEFCONFIG=weebcustom_defconfig
+	export BUILDFOR=custom
 fi
 
 export ZIPNAME="weeb-${COMPILER,,}-${BUILDFOR}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
@@ -79,9 +60,9 @@ Compiler: <code>${COMPILER}</code>
 Branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>
 Latest Commit: <code>$(git log --pretty=format:'%h : %s' -1)</code>
 <i>Build started on semaphore_ci....</i>" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
+curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build started for revision ${SEMAPHORE_BUILD_NUMBER}" -d chat_id=${KERNEL_CHAT_ID} -d parse_mode=HTML
 fi
 
-curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="<code> // Compilation Started on Semaphore CI for ${BUILDFOR} // </code>" -d chat_id=${KERNEL_CHAT_ID} -d parse_mode=HTML
 
 # compilation
 START=$(date +"%s")
@@ -114,22 +95,21 @@ zip -r9 ${ZIPNAME} * -x README.md ${ZIPNAME}
 CHECKER=$(ls -l ${ZIPNAME} | awk '{print $5}')
 
 if (($((CHECKER / 1048576)) > 5)); then
-	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build compiled successfully in $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds for ${BUILDFOR}" -d chat_id=${KERNEL_CHAT_ID} -d parse_mode=HTML
+	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build compiled successfully in $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds for ${BUILDFOR}" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
 	curl -F chat_id="${CI_CHANNEL_ID}" -F document=@"$(pwd)/${ZIPNAME}" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
+	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build for ${BUILDFOR} pushed to CI Channel!" -d chat_id=${KERNEL_CHAT_ID}
 else
 	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="The compiler decides to scream at @idkwhoiam322 for ruining ${BUILDFOR}" -d chat_id=${KERNEL_CHAT_ID}
 	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build for ${BUILDFOR} throwing err0rs yO" -d chat_id=${CI_CHANNEL_ID}
+	exit 1;
 fi
-cd {SEMAPHORE_PROJECT_DIR}
+rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb && rm -rf modules
+cd ..
 
 if [[ ${BUILDFOR} == *"custom"* ]]; then
-	cd anykernel
-	rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb
-	cd ..
 	export DEFCONFIG=weebomni_defconfig
 	export BUILDFOR=omni
 	export ZIPNAME="weeb-${COMPILER,,}-${BUILDFOR}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
-curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="<code> // Now we will compile for ${BUILDFOR} // </code>" -d chat_id=${KERNEL_CHAT_ID} -d parse_mode=HTML
 	START=$(date +"%s")
 	make O=out ARCH=arm64 $DEFCONFIG
 	make -j${KEBABS} O=out
@@ -151,10 +131,13 @@ curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="
 	CHECKER=$(ls -l ${ZIPNAME} | awk '{print $5}')
 
 	if (($((CHECKER / 1048576)) > 5)); then
-		curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build compiled successfully in $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds for ${BUILDFOR}" -d chat_id=${KERNEL_CHAT_ID} -d parse_mode=HTML
+		curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build compiled successfully in $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds for ${BUILDFOR}" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
 		curl -F chat_id="${CI_CHANNEL_ID}" -F document=@"$(pwd)/${ZIPNAME}" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
+		curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build for ${BUILDFOR} pushed to CI Channel!" -d chat_id=${KERNEL_CHAT_ID}
 	else
 		curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="The compiler decides to scream at @idkwhoiam322 for ruining ${BUILDFOR}" -d chat_id=${KERNEL_CHAT_ID}
 		curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build for ${BUILDFOR} throwing err0rs yO" -d chat_id=${CI_CHANNEL_ID}
+		exit 1;
 	fi
+	rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb && rm -rf modules
 fi
