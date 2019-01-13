@@ -51,11 +51,6 @@ if [[ ${COMPILER} == *"CLANG"* ]]; then
 			export DEFCONFIG=weebcustom_defconfig
 			export BUILDFOR=custom
 		fi
-
-		if [[ "$@" =~ "omni"* ]]; then
-			export DEFCONFIG=weebomni_defconfig
-			export BUILDFOR=omni
-		fi
 fi
 
 if [[ ${COMPILER} == *"GCC"* ]]; then
@@ -71,11 +66,6 @@ if [[ ${COMPILER} == *"GCC"* ]]; then
 			export DEFCONFIG=weebcustom_defconfig
 			export BUILDFOR=custom
 		fi
-
-		if [[ "$@" =~ "omni"* ]]; then
-			export DEFCONFIG=weebomni_defconfig
-			export BUILDFOR=omni
-		fi 
 fi
 
 export ZIPNAME="weeb-${COMPILER,,}-${BUILDFOR}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
@@ -121,16 +111,6 @@ if [[ ${BUILDFOR} == *"custom"* ]]; then
 	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
 fi
 
-# prepare zip for omni
-if [[ ${BUILDFOR} == *"omni"* ]]; then
-	mkdir anykernel/modules
-	mkdir anykernel/modules/system
-	mkdir anykernel/modules/system/lib
-	mkdir anykernel/modules/system/lib/modules
-	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
-	cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/modules/system/lib/modules
-	${STRIP} --strip-unneeded $(pwd)/anykernel/modules/system/lib/modules/wlan.ko
-fi
 
 # POST ZIP OR FAILURE
 cd anykernel
@@ -143,4 +123,41 @@ if (($((CHECKER / 1048576)) > 5)); then
 else
 	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="The compiler decides to scream at @idkwhoiam322 for ruining ${BUILDFOR}" -d chat_id=${KERNEL_CHAT_ID}
 	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build for ${BUILDFOR} throwing err0rs yO" -d chat_id=${CI_CHANNEL_ID}
+fi
+
+
+if [[ ${BUILDFOR} == *"custom"* ]]; then
+	cd anykernel
+	rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb
+	cd ..
+	export DEFCONFIG=weebomni_defconfig
+	export BUILDFOR=omni
+	export ZIPNAME="weeb-${COMPILER,,}-${BUILDFOR}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
+	START=$(date +"%s")
+	make O=out ARCH=arm64 $DEFCONFIG
+	make -j${KEBABS} O=out
+	END=$(date +"%s")
+	DIFF=$((END - START))
+
+	# prepare zip for omni
+		mkdir anykernel/modules
+		mkdir anykernel/modules/system
+		mkdir anykernel/modules/system/lib
+		mkdir anykernel/modules/system/lib/modules
+		cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
+		cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/modules/system/lib/modules
+		${STRIP} --strip-unneeded $(pwd)/anykernel/modules/system/lib/modules/wlan.ko
+
+	# final push
+	cd anykernel
+	zip -r9 ${ZIPNAME} * -x README.md ${ZIPNAME}
+	CHECKER=$(ls -l ${ZIPNAME} | awk '{print $5}')
+
+	if (($((CHECKER / 1048576)) > 5)); then
+		curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build compiled successfully in $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds for ${BUILDFOR}" -d chat_id=${KERNEL_CHAT_ID} -d parse_mode=HTML
+		curl -F chat_id="${CI_CHANNEL_ID}" -F document=@"$(pwd)/${ZIPNAME}" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
+	else
+		curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="The compiler decides to scream at @idkwhoiam322 for ruining ${BUILDFOR}" -d chat_id=${KERNEL_CHAT_ID}
+		curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build for ${BUILDFOR} throwing err0rs yO" -d chat_id=${CI_CHANNEL_ID}
+	fi
 fi
