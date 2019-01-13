@@ -81,7 +81,7 @@ Latest Commit: <code>$(git log --pretty=format:'%h : %s' -1)</code>
 <i>Build started on semaphore_ci....</i>" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
 fi
 
-curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="<code> // Compilation Started on Semaphore CI // </code>" -d chat_id=${KERNEL_CHAT_ID} -d parse_mode=HTML
+curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="<code> // Compilation Started on Semaphore CI for ${BUILDFOR} // </code>" -d chat_id=${KERNEL_CHAT_ID} -d parse_mode=HTML
 
 # compilation
 START=$(date +"%s")
@@ -133,6 +133,7 @@ if [[ ${BUILDFOR} == *"custom"* ]]; then
 	export DEFCONFIG=weebomni_defconfig
 	export BUILDFOR=omni
 	export ZIPNAME="weeb-${COMPILER,,}-${BUILDFOR}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
+curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="<code> // Now we will compile for ${BUILDFOR} // </code>" -d chat_id=${KERNEL_CHAT_ID} -d parse_mode=HTML
 	START=$(date +"%s")
 	make O=out ARCH=arm64 $DEFCONFIG
 	make -j${KEBABS} O=out
