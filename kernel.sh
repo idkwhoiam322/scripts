@@ -104,10 +104,6 @@ fi
 
 # prepare zip for custom
 if [[ ${BUILDFOR} == *"custom"* ]]; then
-	rm -rf anykernel/ramdisk/init.qcomoos.rc
-	rm -rf anykernel/ramdisk/init.weeboos.sh
-	mv anykernel/ramdisk/init.qcomcustom.rc anykernel/ramdisk/init.qcom.rc
-	mv anykernel/ramdisk/init.weebcustom.sh anykernel/ramdisk/init.weeb.sh
 	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
 fi
 
@@ -124,7 +120,7 @@ else
 	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="The compiler decides to scream at @idkwhoiam322 for ruining ${BUILDFOR}" -d chat_id=${KERNEL_CHAT_ID}
 	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build for ${BUILDFOR} throwing err0rs yO" -d chat_id=${CI_CHANNEL_ID}
 fi
-
+cd {SEMAPHORE_PROJECT_DIR}
 
 if [[ ${BUILDFOR} == *"custom"* ]]; then
 	cd anykernel
