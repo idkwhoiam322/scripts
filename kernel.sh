@@ -3,7 +3,7 @@ cd ..
 # PREPPING
 
 # Set Kernel Info
-export VERA="-weeb"
+export VERA="-hentai"
 export VERB_SET=$(git rev-parse HEAD)
 export VERB="$(date +%Y%m%d)-$(echo ${VERB_SET:0:4})"
 VERSION="${VERA}-${VERB}"
@@ -49,7 +49,7 @@ if [[ "$@" =~ "custom"* ]]; then
 	export BUILDFOR=custom
 fi
 
-export ZIPNAME="weeb-${COMPILER,,}-${BUILDFOR}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
+export ZIPNAME="hentai-${COMPILER,,}-${BUILDFOR}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
 
 # Telegram Post to CI channel
 if [[ "$@" =~ "post"* ]]; then 
@@ -109,7 +109,7 @@ cd ..
 if [[ ${BUILDFOR} == *"custom"* ]]; then
 	export DEFCONFIG=weebomni_defconfig
 	export BUILDFOR=omni
-	export ZIPNAME="weeb-${COMPILER,,}-${BUILDFOR}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
+	export ZIPNAME="hentai-${COMPILER,,}-${BUILDFOR}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
 	START=$(date +"%s")
 	make O=out ARCH=arm64 $DEFCONFIG
 	make -j${KEBABS} O=out
