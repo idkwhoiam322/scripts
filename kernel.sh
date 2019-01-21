@@ -10,7 +10,7 @@ VERSION="${VERA}-${VERB}"
 
 # Export User and Host
 export KBUILD_BUILD_USER=idkwhoiam322
-export KBUILD_BUILD_HOST=Kebabs
+export KBUILD_BUILD_HOST=RaphielGang
 
 # Export versions
 export KBUILD_BUILD_VERSION=1
