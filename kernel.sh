@@ -49,7 +49,7 @@ if [[ "$@" =~ "custom"* ]]; then
 	export BUILDFOR=custom
 fi
 
-export ZIPNAME="hentai-${COMPILER,,}-${BUILDFOR}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
+export ZIPNAME="${COMPILER,,}-${BUILDFOR}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
 
 # Telegram Post to CI channel
 if [[ "$@" =~ "post"* ]]; then 
@@ -109,7 +109,7 @@ cd ..
 if [[ ${BUILDFOR} == *"custom"* ]]; then
 	export DEFCONFIG=weebomni_defconfig
 	export BUILDFOR=omni
-	export ZIPNAME="hentai-${COMPILER,,}-${BUILDFOR}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
+	export ZIPNAME="${COMPILER,,}-${BUILDFOR}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
 	START=$(date +"%s")
 	make O=out ARCH=arm64 $DEFCONFIG
 	make -j${KEBABS} O=out
