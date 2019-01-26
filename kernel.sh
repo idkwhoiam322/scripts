@@ -19,8 +19,8 @@ export LOCALVERSION=`echo ${VERSION}`
 # Set COMPILER
 if [[ "$@" =~ "gcc" ]]; then
 	export COMPILER=GCC
-	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-raph-linux-android-"
-	export STRIP="$(pwd)/gcc/bin/aarch64-raph-linux-android-strip"
+	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-gnu-"
+	export STRIP="$(pwd)/gcc/bin/aarch64-linux-gnu-strip"
 	
 else
 	export COMPILER=CLANG
