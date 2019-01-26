@@ -3,7 +3,7 @@ cd ..
 # PREPPING
 
 # Set Kernel Info
-export VERA="-hentai"
+export VERA="-Hentai"
 export VERB_SET=$(git rev-parse HEAD)
 export VERB="$(date +%Y%m%d)-$(echo ${VERB_SET:0:4})"
 VERSION="${VERA}-${VERB}"
