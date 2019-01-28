@@ -6,7 +6,7 @@ cd ..
 export VERA="-Hentai"
 export VERB_SET=$(git rev-parse HEAD)
 export VERB="$(date +%Y%m%d)-$(echo ${VERB_SET:0:4})"
-VERSION="${VERA}-${VERB}"
+VERSION="${VERA}-${VERB}-r${SEMAPHORE_BUILD_NUMBER}"
 
 # Export User and Host
 export KBUILD_BUILD_USER=idkwhoiam322
