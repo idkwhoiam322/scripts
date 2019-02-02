@@ -12,6 +12,11 @@ if [[ "$@" =~ "gcc" ]]; then
 	git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 --depth=1 gcc32
 else
 	git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 --depth=1 gcc
-	git clone https://github.com/celtare21/toolchains.git -b dtc9 --depth=1 dtc9
 	git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 --depth=1 gcc32
+	git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 --depth=1 clang
+	cd clang
+	ls
+	rm -rf clang-3289846 && rm -rf clang-4679922 && rm -rf clang-r328903 && rm -rf clang-r339409b && rm -rf clang-4679922 && rm -rf clang-3289846 && rm -rf clang-r328903 && rm -rf clang-r339409b && rm -rf clang-r344140b && rm -rf clang-r346389 && rm -rf clang-r346389b && rm -rf clang-stable
+	ls
+	cd ..
 fi
