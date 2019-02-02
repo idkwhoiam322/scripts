@@ -23,10 +23,10 @@ if [[ "$@" =~ "gcc" ]]; then
 	export STRIP="$(pwd)/gcc/bin/aarch64-linux-gnu-strip"
 	
 else
-	export COMPILER=CLANG
-	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r346389c/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
+	export COMPILER=DTC9
+	export KBUILD_COMPILER_STRING="$($(pwd)/dtc9/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
 	export STRIP=$(pwd)/gcc/bin/aarch64-linux-android-strip
-	export CC="$(pwd)/clang/clang-r346389c/bin/clang"
+	export CC="$(pwd)/dtc9/bin/clang"
 	export CLANG_TRIPLE=aarch64-linux-gnu-
 	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
 fi
