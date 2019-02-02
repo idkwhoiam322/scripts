@@ -20,6 +20,7 @@ export LOCALVERSION=`echo ${VERSION}`
 if [[ "$@" =~ "gcc" ]]; then
 	export COMPILER=GCC
 	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-gnu-"
+	export CROSS_COMPILE_ARM32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
 	export STRIP="$(pwd)/gcc/bin/aarch64-linux-gnu-strip"
 	
 else
@@ -29,6 +30,7 @@ else
 	export CC="$(pwd)/dtc9/bin/clang"
 	export CLANG_TRIPLE=aarch64-linux-gnu-
 	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
+	export CROSS_COMPILE_ARM32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
 fi
 export ARCH=arm64 && export SUBARCH=arm64
 
