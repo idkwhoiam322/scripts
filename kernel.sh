@@ -20,7 +20,7 @@ export LOCALVERSION=`echo ${VERSION}`
 if [[ "$@" =~ "gcc" ]]; then
 	export COMPILER=GCC
 	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-gnu-"
-	export CROSS_COMPILE_ARM32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
+	export CROSS_COMPILE_ARM32="$(pwd)/gcc32/bin/arm-linux-gnueabi-"
 	export STRIP="$(pwd)/gcc/bin/aarch64-linux-gnu-strip"
 	
 else
