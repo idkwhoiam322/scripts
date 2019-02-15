@@ -51,7 +51,7 @@ if [[ "$@" =~ "custom"* ]]; then
 	export BUILDFOR=custom
 fi
 
-export ZIPNAME="${COMPILER,,}-${BUILDFOR}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
+export ZIPNAME="r${SEMAPHORE_BUILD_NUMBER}-${BUILDFOR}-$(git rev-parse --abbrev-ref HEAD)-$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
 
 # Telegram Post to CI channel
 if [[ "$@" =~ "post"* ]]; then 
@@ -111,7 +111,7 @@ cd ..
 if [[ ${BUILDFOR} == *"custom"* ]]; then
 	export DEFCONFIG=weebomni_defconfig
 	export BUILDFOR=omni
-	export ZIPNAME="${COMPILER,,}-${BUILDFOR}-r${SEMAPHORE_BUILD_NUMBER}-${VERB}.zip"
+	export ZIPNAME="r${SEMAPHORE_BUILD_NUMBER}-${BUILDFOR}-$(git rev-parse --abbrev-ref HEAD)-$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
 	START=$(date +"%s")
 	make O=out ARCH=arm64 $DEFCONFIG
 	make -j${KEBABS} O=out
