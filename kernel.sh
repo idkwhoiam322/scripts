@@ -25,12 +25,7 @@ if [[ "$@" =~ "gcc" ]]; then
 	
 else
 	export COMPILER=CLANG
-	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r349610/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
 	export STRIP=$(pwd)/gcc/bin/aarch64-linux-android-strip
-	export CC="$(pwd)/clang/clang-r349610/bin/clang"
-	export CLANG_TRIPLE=aarch64-linux-gnu-
-	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
-	export CROSS_COMPILE_ARM32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
 fi
 export ARCH=arm64 && export SUBARCH=arm64
 
@@ -69,7 +64,11 @@ fi
 # compilation
 START=$(date +"%s")
 make O=out ARCH=arm64 $DEFCONFIG
-make -j${KEBABS} O=out
+if [[ "$@" =~ "gcc" ]]; then
+	make -j${KEBABS} O=out
+else
+	make -j${KEBABS} O=out ARCH=arm64 CC="/home/runner/weebmsm8998-pie/clang/clang-r349610/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/home/runner/weebmsm8998-pie/gcc/bin/aarch64-linux-android-" CROSS_COMPILE_ARM32="/home/runner/weebmsm8998-pie/gcc32/bin/arm-linux-androideabi-"
+fi
 END=$(date +"%s")
 DIFF=$((END - START))
 
@@ -114,7 +113,11 @@ if [[ ${BUILDFOR} == *"custom"* ]]; then
 	export ZIPNAME="r${SEMAPHORE_BUILD_NUMBER}-${BUILDFOR}-$(git rev-parse --abbrev-ref HEAD)-$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
 	START=$(date +"%s")
 	make O=out ARCH=arm64 $DEFCONFIG
-	make -j${KEBABS} O=out
+	if [[ "$@" =~ "gcc" ]]; then
+		make -j${KEBABS} O=out
+	else
+		make -j${KEBABS} O=out ARCH=arm64 CC="/home/runner/weebmsm8998-pie/clang/clang-r349610/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/home/runner/weebmsm8998-pie/gcc/bin/aarch64-linux-android-" CROSS_COMPILE_ARM32="/home/runner/weebmsm8998-pie/gcc32/bin/arm-linux-androideabi-"
+	fi
 	END=$(date +"%s")
 	DIFF=$((END - START))
 
