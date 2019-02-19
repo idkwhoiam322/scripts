@@ -25,6 +25,7 @@ if [[ "$@" =~ "gcc" ]]; then
 	
 else
 	export COMPILER=CLANG
+	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r349610/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
 	export STRIP=$(pwd)/gcc/bin/aarch64-linux-android-strip
 fi
 export ARCH=arm64 && export SUBARCH=arm64
@@ -106,6 +107,9 @@ else
 fi
 rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb && rm -rf modules
 cd ..
+if [[ ${BUILDFOR} == *"oos"* ]]; then
+curl -F chat_id="${CI_CHANNEL_ID}" -F document=@"$(pwd)/out/include/generated/compile.h" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
+fi
 
 if [[ ${BUILDFOR} == *"custom"* ]]; then
 	export DEFCONFIG=weebomni_defconfig
@@ -145,4 +149,5 @@ if [[ ${BUILDFOR} == *"custom"* ]]; then
 		exit 1;
 	fi
 	rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb && rm -rf modules
+	cd ..
 fi
