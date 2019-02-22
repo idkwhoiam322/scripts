@@ -12,6 +12,19 @@ VERSION="${VERA}-${VERB}-r${SEMAPHORE_BUILD_NUMBER}"
 export KBUILD_BUILD_USER=idkwhoiam322
 export KBUILD_BUILD_HOST=RaphielGang
 
+# Release type
+if	[[ "$@" =~ "alpha"* ]]; then
+	export KERNEL_BUILD_TYPE="alpha"
+elif [[ "$@" =~ "beta"* ]]; then
+	export KERNEL_BUILD_TYPE="beta"
+elif [[ "$@" =~ "stable"* ]]; then
+	export VERA="-Weeb-Kernel"
+	export KERNEL_BUILD_TYPE="Stable"
+	export RELEASE_VERSION="2.10"
+	export RELEASE_CODENAME="AURA"
+	export VERSION="${VERA}-${KERNEL_BUILD_TYPE}-v${RELEASE_VERSION}-${RELEASE_CODENAME}"
+fi
+
 # Export versions
 export KBUILD_BUILD_VERSION=1
 export LOCALVERSION=`echo ${VERSION}`
@@ -46,12 +59,16 @@ if [[ "$@" =~ "custom"* ]]; then
 	export BUILDFOR=custom
 fi
 
-export ZIPNAME="r${SEMAPHORE_BUILD_NUMBER}-${BUILDFOR}-$(git rev-parse --abbrev-ref HEAD)-$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
+if [[ "$@" =~ "stable"* ]]; then 
+	export ZIPNAME="${BUILDFOR}${VERSION}.zip"
+else
+	export ZIPNAME="${KERNEL_BUILD_TYPE}-r${SEMAPHORE_BUILD_NUMBER}-${BUILDFOR}-$(git rev-parse --abbrev-ref HEAD)-$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
+fi
 
 # Telegram Post to CI channel
 if [[ "$@" =~ "post"* ]]; then 
 	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Kernel: <code>Weeb Kernel</code>
-Type: <code>BETA</code>
+Type: <code>${KERNEL_BUILD_TYPE^^}</code>
 Device: <code>OnePlus 5/T</code>
 Compiler: <code>${COMPILER}</code>
 Branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>
@@ -110,10 +127,14 @@ if [[ ${BUILDFOR} == *"oos"* ]]; then
 curl -F chat_id="${CI_CHANNEL_ID}" -F document=@"$(pwd)/out/include/generated/compile.h" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
 fi
 
-if [[ ${BUILDFOR} == *"custom"* ]]; then
-	export DEFCONFIG=weebomni_defconfig
-	export BUILDFOR=omni
-	export ZIPNAME="r${SEMAPHORE_BUILD_NUMBER}-${BUILDFOR}-$(git rev-parse --abbrev-ref HEAD)-$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
+	if [[ ${BUILDFOR} == *"custom"* ]]; then
+		export DEFCONFIG=weebomni_defconfig
+		export BUILDFOR=omni
+	if [[ "$@" =~ "stable"* ]]; then 
+		export ZIPNAME="${BUILDFOR}${VERSION}.zip"
+	else
+		export ZIPNAME="${KERNEL_BUILD_TYPE}-r${SEMAPHORE_BUILD_NUMBER}-${BUILDFOR}-$(git rev-parse --abbrev-ref HEAD)-$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
+	fi
 	START=$(date +"%s")
 	make O=out ARCH=arm64 $DEFCONFIG
 	if [[ "$@" =~ "gcc" ]]; then
