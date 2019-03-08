@@ -49,16 +49,6 @@ if [[ -z "${KEBABS}" ]]; then
 fi
 
 
-if [[ "$@" =~ "oos"* ]]; then 
-	export DEFCONFIG=weeb_defconfig
-	export BUILDFOR=oos
-fi
-
-if [[ "$@" =~ "custom"* ]]; then
-	export DEFCONFIG=weebcustom_defconfig
-	export BUILDFOR=custom
-fi
-
 if [[ "$@" =~ "stable"* ]]; then 
 	export ZIPNAME="${BUILDFOR}${VERSION}.zip"
 else
@@ -102,7 +92,7 @@ if [[ ${BUILDFOR} == *"oos"* ]]; then
 fi
 
 # prepare zip for custom
-if [[ ${BUILDFOR} == *"custom"* ]]; then
+if [[ ${BUILDFOR} == *"custom"* ]] || [[ ${BUILDFOR} == *"hax"* ]]; then
 	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
 fi
 
