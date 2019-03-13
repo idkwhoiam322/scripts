@@ -20,8 +20,6 @@ elif [[ "$@" =~ "beta"* ]]; then
 elif [[ "$@" =~ "stable"* ]]; then
 	export VERA="-Weeb-Kernel"
 	export KERNEL_BUILD_TYPE="Stable"
-	export RELEASE_VERSION="2.10"
-	export RELEASE_CODENAME="AURA"
 	export VERSION="${VERA}-${KERNEL_BUILD_TYPE}-v${RELEASE_VERSION}-${RELEASE_CODENAME}"
 fi
 
