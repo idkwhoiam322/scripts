@@ -11,9 +11,9 @@ if [[ "$@" =~ "gcc" ]]; then
 	git clone https://github.com/RaphielGang/aarch64-linux-gnu-8.x.git -b master gcc
 	git clone https://github.com/RaphielGang/arm-linux-gnueabi-8.x.git -b master gcc32
 else
-	git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 --depth=5 gcc
+	git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 --depth=6 gcc
 	cd gcc && git reset --hard e54105c9f893a376232e0fc539c0e7c01c829b1e && cd ..
-	git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 --depth=5 gcc32
+	git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 --depth=6 gcc32
 	cd gcc32 && git reset --hard b91992b549430ac1a8a684f4bfe8c95941901165 && cd .. 
 	git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 --depth=1 clang
 	cd clang
