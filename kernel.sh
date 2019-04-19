@@ -72,7 +72,7 @@ make O=out ARCH=arm64 $DEFCONFIG
 if [[ "$@" =~ "gcc" ]]; then
 	make -j${KEBABS} O=out
 else
-	make -j${KEBABS} O=out ARCH=arm64 CC="/home/runner/${SEMAPHORE_PROJECT_NAME}/clang/clang-r353983b/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc/bin/aarch64-linux-android-" CROSS_COMPILE_ARM32="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc32/bin/arm-linux-androideabi-"
+	make -j${KEBABS} O=out ARCH=arm64 CC="/home/runner/${SEMAPHORE_PROJECT_NAME}/clang/clang-r353983c/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc/bin/aarch64-linux-android-" CROSS_COMPILE_ARM32="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc32/bin/arm-linux-androideabi-"
 fi
 END=$(date +"%s")
 DIFF=$((END - START))
@@ -128,7 +128,7 @@ fi
 	if [[ "$@" =~ "gcc" ]]; then
 		make -j${KEBABS} O=out
 	else
-		make -j${KEBABS} O=out ARCH=arm64 CC="/home/runner/${SEMAPHORE_PROJECT_NAME}/clang/clang-r353983b/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc/bin/aarch64-linux-android-" CROSS_COMPILE_ARM32="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc32/bin/arm-linux-androideabi-"
+		make -j${KEBABS} O=out ARCH=arm64 CC="/home/runner/${SEMAPHORE_PROJECT_NAME}/clang/clang-r353983c/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc/bin/aarch64-linux-android-" CROSS_COMPILE_ARM32="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc32/bin/arm-linux-androideabi-"
 	fi
 	END=$(date +"%s")
 	DIFF=$((END - START))
