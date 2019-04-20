@@ -36,6 +36,7 @@ if [[ "$@" =~ "gcc" ]]; then
 	
 else
 	export COMPILER=CLANG
+	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r353983c/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
 	export STRIP=$(pwd)/gcc/bin/aarch64-linux-android-strip
 fi
 export ARCH=arm64 && export SUBARCH=arm64
