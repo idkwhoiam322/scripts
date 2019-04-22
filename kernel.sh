@@ -30,9 +30,9 @@ export LOCALVERSION=`echo ${VERSION}`
 # Set COMPILER
 if [[ "$@" =~ "gcc" ]]; then
 	export COMPILER=GCC
-	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-raphiel-linux-gnu-"
+	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-gnu-"
 	export CROSS_COMPILE_ARM32="$(pwd)/gcc32/bin/arm-linux-gnueabi-"
-	export STRIP="$(pwd)/gcc/bin/aarch64-raphiel-linux-gnu-strip-strip"
+	export STRIP="$(pwd)/gcc/bin/aarch64-linux-gnu-strip"
 	
 else
 	export COMPILER=CLANG
@@ -127,7 +127,7 @@ fi
 	START=$(date +"%s")
 	make O=out ARCH=arm64 $DEFCONFIG
 	if [[ "$@" =~ "gcc" ]]; then
-		make -j${KEBABS} O=out
+	make -j${KEBABS} O=out ARCH=arm64
 	else
 		make -j${KEBABS} O=out ARCH=arm64 CC="/home/runner/${SEMAPHORE_PROJECT_NAME}/clang/clang-r353983c/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc/bin/aarch64-linux-android-" CROSS_COMPILE_ARM32="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc32/bin/arm-linux-androideabi-"
 	fi
