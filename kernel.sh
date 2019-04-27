@@ -13,9 +13,7 @@ export KBUILD_BUILD_USER=idkwhoiam322
 export KBUILD_BUILD_HOST=RaphielGang
 
 # Release type
-if	[[ "$@" =~ "alpha"* ]]; then
-	export KERNEL_BUILD_TYPE="alpha"
-elif [[ "$@" =~ "beta"* ]]; then
+if [[ "$@" =~ "beta"* ]]; then
 	export KERNEL_BUILD_TYPE="beta"
 elif [[ "$@" =~ "stable"* ]]; then
 	export VERA="-Weeb-Kernel"
