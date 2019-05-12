@@ -110,9 +110,6 @@ else
 fi
 rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb && rm -rf modules
 cd ..
-if [[ ${BUILDFOR} == *"oos"* ]]; then
-curl -F chat_id="${CI_CHANNEL_ID}" -F document=@"$(pwd)/out/include/generated/compile.h" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
-fi
 
 	if [[ ${BUILDFOR} == *"custom"* ]]; then
 		export DEFCONFIG=weebomni_defconfig
@@ -156,5 +153,4 @@ fi
 		exit 1;
 	fi
 	rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb && rm -rf modules
-	cd ..
 fi
