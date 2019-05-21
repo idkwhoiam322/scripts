@@ -10,7 +10,7 @@ VERSION="${VERA}-${VERB}-r${SEMAPHORE_BUILD_NUMBER}"
 
 # Export User and Host
 export KBUILD_BUILD_USER=idkwhoiam322
-export KBUILD_BUILD_HOST=RaphielGang
+export KBUILD_BUILD_HOST=raphielgangci
 
 # Release type
 if [[ "$@" =~ "beta"* ]]; then
