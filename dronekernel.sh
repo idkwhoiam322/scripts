@@ -72,7 +72,7 @@ make O=out ARCH=arm64 $DEFCONFIG
 if [[ "$@" =~ "gcc" ]]; then
 	make -j${KEBABS} O=out ARCH=arm64
 else
-	make -j${KEBABS} O=out ARCH=arm64 CC="/home/runner/${DRONE_REPO_NAME}/clang/clang-r353983d/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/home/runner/${DRONE_REPO_NAME}/gcc/bin/aarch64-linux-gnu-" CROSS_COMPILE_ARM32="/home/runner/${DRONE_REPO_NAME}/gcc32/bin/arm-linux-gnueabi-"
+	make -j${KEBABS} O=out ARCH=arm64 CC="/drone/src/clang/clang-r353983d/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/drone/src/gcc/bin/aarch64-linux-gnu-" CROSS_COMPILE_ARM32="/drone/src/gcc32/bin/arm-linux-gnueabi-"
 fi
 END=$(date +"%s")
 DIFF=$((END - START))
@@ -126,7 +126,7 @@ rm -rf out
 	if [[ "$@" =~ "gcc" ]]; then
 	make -j${KEBABS} O=out ARCH=arm64
 	else
-		make -j${KEBABS} O=out ARCH=arm64 CC="/home/runner/${DRONE_REPO_NAME}/clang/clang-r353983d/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/home/runner/${DRONE_REPO_NAME}/gcc/bin/aarch64-linux-gnu-" CROSS_COMPILE_ARM32="/home/runner/${DRONE_REPO_NAME}/gcc32/bin/arm-linux-gnueabi-"
+		make -j${KEBABS} O=out ARCH=arm64 CC="/drone/src/clang/clang-r353983d/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/drone/src/gcc/bin/aarch64-linux-gnu-" CROSS_COMPILE_ARM32="/drone/src/gcc32/bin/arm-linux-gnueabi-"
 	fi
 	END=$(date +"%s")
 	DIFF=$((END - START))
