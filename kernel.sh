@@ -34,7 +34,7 @@ if [[ "$@" =~ "gcc" ]]; then
 	
 else
 	export COMPILER=CLANG
-	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r353983d/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
+	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r353983e/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
 	export STRIP="$(pwd)/gcc/bin/aarch64-linux-gnu-strip"
 fi
 export ARCH=arm64 && export SUBARCH=arm64
@@ -71,7 +71,7 @@ make O=out ARCH=arm64 $DEFCONFIG
 if [[ "$@" =~ "gcc" ]]; then
 	make -j${KEBABS} O=out ARCH=arm64
 else
-	make -j${KEBABS} O=out ARCH=arm64 CC="/home/runner/${SEMAPHORE_PROJECT_NAME}/clang/clang-r353983d/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc/bin/aarch64-linux-gnu-" CROSS_COMPILE_ARM32="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc32/bin/arm-linux-gnueabi-"
+	make -j${KEBABS} O=out ARCH=arm64 CC="/home/runner/${SEMAPHORE_PROJECT_NAME}/clang/clang-r353983e/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc/bin/aarch64-linux-gnu-" CROSS_COMPILE_ARM32="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc32/bin/arm-linux-gnueabi-"
 fi
 END=$(date +"%s")
 DIFF=$((END - START))
@@ -124,7 +124,7 @@ cd ..
 	if [[ "$@" =~ "gcc" ]]; then
 	make -j${KEBABS} O=out ARCH=arm64
 	else
-		make -j${KEBABS} O=out ARCH=arm64 CC="/home/runner/${SEMAPHORE_PROJECT_NAME}/clang/clang-r353983d/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc/bin/aarch64-linux-gnu-" CROSS_COMPILE_ARM32="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc32/bin/arm-linux-gnueabi-"
+		make -j${KEBABS} O=out ARCH=arm64 CC="/home/runner/${SEMAPHORE_PROJECT_NAME}/clang/clang-r353983e/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc/bin/aarch64-linux-gnu-" CROSS_COMPILE_ARM32="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc32/bin/arm-linux-gnueabi-"
 	fi
 	END=$(date +"%s")
 	DIFF=$((END - START))
