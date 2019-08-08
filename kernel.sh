@@ -22,7 +22,7 @@ elif [[ "$@" =~ "stable"* ]]; then
 fi
 
 # Export versions
-export KBUILD_BUILD_VERSION=1
+export KBUILD_BUILD_VERSION=204
 export LOCALVERSION=`echo ${VERSION}`
 
 # Set COMPILER
@@ -58,6 +58,7 @@ Type: <code>${KERNEL_BUILD_TYPE^^}</code>
 Device: <code>OnePlus 5/T</code>
 Compiler: <code>${COMPILER}</code>
 Branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>
+Build Number: <code>r${SEMAPHORE_BUILD_NUMBER}</code>
 Latest Commit: <code>$(git log --pretty=format:'%h : %s' -1)</code>
 <i>Build started on semaphore_ci....</i>" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
 curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build started for revision ${SEMAPHORE_BUILD_NUMBER}" -d chat_id=${KERNEL_CHAT_ID} -d parse_mode=HTML
