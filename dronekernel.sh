@@ -105,6 +105,7 @@ else
 fi
 rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb && rm -rf modules
 cd ..
+	curl -F chat_id="${CI_CHANNEL_ID}" -F document=@"$(pwd)/out/System.map" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
 rm -rf out
 
 	if [[ ${BUILDFOR} == *"custom"* ]]; then
