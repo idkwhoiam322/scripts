@@ -50,7 +50,7 @@ fi
 if [[ "$@" =~ "stable"* ]]; then 
 	export ZIPNAME="${BUILDFOR}${VERSION}.zip"
 else
-	export ZIPNAME="${KERNEL_BUILD_TYPE}-r${DRONE_BUILD_NUMBER}-${BUILDFOR}-$(git rev-parse --abbrev-ref HEAD)-$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
+	export ZIPNAME="${KERNEL_BUILD_TYPE}-r${DRONE_BUILD_NUMBER}-${BUILDFOR}-$(git rev-parse --abbrev-ref HEAD).$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
 fi
 
 # Telegram Post to CI channel
@@ -114,7 +114,7 @@ rm -rf out
 	if [[ "$@" =~ "stable"* ]]; then 
 		export ZIPNAME="${BUILDFOR}${VERSION}.zip"
 	else
-		export ZIPNAME="${KERNEL_BUILD_TYPE}-r${DRONE_BUILD_NUMBER}-${BUILDFOR}-$(git rev-parse --abbrev-ref HEAD)-$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
+		export ZIPNAME="${KERNEL_BUILD_TYPE}-r${DRONE_BUILD_NUMBER}-${BUILDFOR}-$(git rev-parse --abbrev-ref HEAD).$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
 	fi
 	START=$(date +"%s")
 	make O=out ARCH=arm64 $DEFCONFIG
