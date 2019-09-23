@@ -16,6 +16,9 @@ export KBUILD_BUILD_HOST=raphielgangci
 # Save current HEAD
 export ACTUAL_HEAD=$(git rev-parse HEAD)
 
+# set git config details
+git config user.email "idkwhoiam322@raphielgang.org"
+git config user.name "whoknowswhoiam"
 # apply patches
 cd pp
 git am -3 *.patch
