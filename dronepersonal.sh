@@ -13,6 +13,14 @@ VERSION="${VERA}-${VERB}-r${DRONE_BUILD_NUMBER}"
 export KBUILD_BUILD_USER=idkwhoiam322
 export KBUILD_BUILD_HOST=raphielgangci
 
+# Save current HEAD
+export ACTUAL_HEAD=$(git rev-parse HEAD)
+
+# apply patches
+cd pp
+git am -3 *.patch
+cd ..
+
 # Release type
 if [[ "$@" =~ "beta"* ]]; then
 	export KERNEL_BUILD_TYPE="beta"
@@ -74,3 +82,6 @@ rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb && rm -rf modules
 cd ..
 	curl -F chat_id="${PERSONAL_CHANNEL_ID}" -F document=@"$(pwd)/out/System.map" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
 rm -rf out
+
+# Reset back to actual head for user builds
+git reset --hard ${ACTUAL_HEAD}
