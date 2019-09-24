@@ -4,10 +4,9 @@ rm -rf out
 # PREPPING
 
 # Set Kernel Info
-export VERA="-Hentai-o-W-o"
+export VERA="-Hentai"
 export VERB_SET=$(git rev-parse HEAD)
-export VERB="$(date +%Y%m%d)-$(echo ${VERB_SET:0:4})"
-VERSION="${VERA}-${VERB}-r${DRONE_BUILD_NUMBER}"
+VERSION="${VERA}-personal-r${DRONE_BUILD_NUMBER}-${VERB_SET:0:7}"
 
 # Export User and Host
 export KBUILD_BUILD_USER=idkwhoiam322
@@ -56,7 +55,7 @@ if [[ -z "${KEBABS}" ]]; then
 fi
 
 
-export ZIPNAME="${KERNEL_BUILD_TYPE}-r${DRONE_BUILD_NUMBER}-${BUILDFOR}-$(git rev-parse --abbrev-ref HEAD).$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
+export ZIPNAME="personal-r${DRONE_BUILD_NUMBER}-${BUILDFOR}-$(git rev-parse --abbrev-ref HEAD).$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
 
 # compilation
 make O=out ARCH=arm64 $DEFCONFIG
