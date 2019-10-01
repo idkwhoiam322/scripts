@@ -79,14 +79,7 @@ DIFF=$((END - START))
 
 # prepare zip for oos
 if [[ ${BUILDFOR} == *"oos"* ]]; then
-	mkdir anykernel/modules
-	mkdir anykernel/modules/vendor
-	mkdir anykernel/modules/vendor/lib
-	mkdir anykernel/modules/vendor/lib/modules
 	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
-	cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/modules/vendor/lib/modules
-	mv $(pwd)/anykernel/modules/vendor/lib/modules/wlan.ko $(pwd)/anykernel/modules/vendor/lib/modules/qca_cld3_wlan.ko
-	${STRIP} --strip-unneeded $(pwd)/anykernel/modules/vendor/lib/modules/qca_cld3_wlan.ko
 fi
 
 # prepare zip for custom
@@ -131,13 +124,7 @@ cd ..
 	DIFF=$((END - START))
 
 	# prepare zip for omni
-		mkdir anykernel/modules
-		mkdir anykernel/modules/system
-		mkdir anykernel/modules/system/lib
-		mkdir anykernel/modules/system/lib/modules
 		cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
-		cp $(pwd)/out/drivers/staging/qcacld-3.0/wlan.ko $(pwd)/anykernel/modules/system/lib/modules
-		${STRIP} --strip-unneeded $(pwd)/anykernel/modules/system/lib/modules/wlan.ko
 
 	# final push
 	cd anykernel
