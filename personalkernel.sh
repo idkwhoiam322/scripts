@@ -83,7 +83,6 @@ fi
 rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb && rm -rf modules
 cd ..
 	curl -F chat_id="${PERSONAL_CHANNEL_ID}" -F document=@"$(pwd)/out/System.map" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
-rm -rf out
 
 # Reset back to actual head for user builds
 git reset --hard ${ACTUAL_HEAD}
