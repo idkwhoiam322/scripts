@@ -46,9 +46,9 @@ if [[ -z "${KEBABS}" ]]; then
 fi
 
 if [[ "$@" =~ "stable"* ]]; then 
-	export ZIPNAME="${BUILDFOR}${VERSION}.zip"
+	export ZIPNAME="${VERSION}.zip"
 else
-	export ZIPNAME="${KERNEL_BUILD_TYPE}-r${SEMAPHORE_BUILD_NUMBER}-${BUILDFOR}-$(git rev-parse --abbrev-ref HEAD).$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
+	export ZIPNAME="${KERNEL_BUILD_TYPE}-r${SEMAPHORE_BUILD_NUMBER}-$(git rev-parse --abbrev-ref HEAD).$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
 fi
 
 # Telegram Post to CI channel
@@ -77,9 +77,7 @@ END=$(date +"%s")
 DIFF=$((END - START))
 
 # prepare zip for custom
-if [[ ${BUILDFOR} == *"custom"* ]]; then
-	cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
-fi
+cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
 
 # POST ZIP OR FAILURE
 cd anykernel
@@ -87,12 +85,10 @@ zip -r9 ${ZIPNAME} * -x README.md ${ZIPNAME}
 CHECKER=$(ls -l ${ZIPNAME} | awk '{print $5}')
 
 if (($((CHECKER / 1048576)) > 5)); then
-	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build compiled successfully in $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds for ${BUILDFOR}" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
+	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build compiled successfully in $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds!" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
 	curl -F chat_id="${CI_CHANNEL_ID}" -F document=@"$(pwd)/${ZIPNAME}" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
-	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build for ${BUILDFOR} pushed to CI Channel!" -d chat_id=${KERNEL_CHAT_ID}
 else
-	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="The compiler decides to scream at @idkwhoiam322 for ruining ${BUILDFOR}" -d chat_id=${KERNEL_CHAT_ID}
-	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build for ${BUILDFOR} throwing err0rs yO" -d chat_id=${CI_CHANNEL_ID}
+	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build throwing err0rs yO" -d chat_id=${CI_CHANNEL_ID}
 	exit 1;
 fi
 rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb && rm -rf modules

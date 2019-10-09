@@ -55,7 +55,7 @@ if [[ -z "${KEBABS}" ]]; then
 fi
 
 
-export ZIPNAME="personal-r${SEMAPHORE_BUILD_NUMBER}-${BUILDFOR}-$(git rev-parse --abbrev-ref HEAD).$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
+export ZIPNAME="personal-r${SEMAPHORE_BUILD_NUMBER}-$(git rev-parse --abbrev-ref HEAD).$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}').zip"
 
 # compilation
 make O=out ARCH=arm64 $DEFCONFIG
@@ -77,7 +77,7 @@ CHECKER=$(ls -l ${ZIPNAME} | awk '{print $5}')
 if (($((CHECKER / 1048576)) > 5)); then
 	curl -F chat_id="${PERSONAL_CHANNEL_ID}" -F document=@"$(pwd)/${ZIPNAME}" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
 else
-	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build for ${BUILDFOR} r${SEMAPHORE_BUILD_NUMBER} throwing err0rs yO" -d chat_id=${PERSONAL_CHANNEL_ID}
+	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build r${SEMAPHORE_BUILD_NUMBER} throwing err0rs yO" -d chat_id=${PERSONAL_CHANNEL_ID}
 	exit 1;
 fi
 rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb && rm -rf modules
