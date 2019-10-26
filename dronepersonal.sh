@@ -62,7 +62,7 @@ make O=out ARCH=arm64 $DEFCONFIG
 if [[ "$@" =~ "gcc" ]]; then
 	make -j${KEBABS} O=out ARCH=arm64
 else
-	make -j${KEBABS} O=out ARCH=arm64 CC="/drone/src/clang/clang-r365631c/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/drone/src/gcc/bin/aarch64-linux-gnu-" CROSS_COMPILE_ARM32="/drone/src/gcc32/bin/arm-linux-gnueabi-"
+	make -j${KEBABS} O=out ARCH=arm64 CC="/drone/src/clang/clang-r365631c/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/drone/src/gcc/bin/aarch64-linux-android-" CROSS_COMPILE_ARM32="/drone/src/gcc32/bin/arm-linux-androideabi-"
 fi
 
 # prepare zip for custom
