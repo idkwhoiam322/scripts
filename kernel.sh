@@ -29,13 +29,10 @@ export LOCALVERSION=`echo ${VERSION}`
 if [[ "$@" =~ "gcc" ]]; then
 	export COMPILER=GCC
 	export CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-elf-"
-	export CROSS_COMPILE_ARM32="$(pwd)/gcc32/bin/arm-eabi-"
-	export STRIP="$(pwd)/gcc/bin/aarch64-elf-strip"
-	
+	export CROSS_COMPILE_ARM32="$(pwd)/gcc32/bin/arm-eabi-"	
 else
 	export COMPILER=CLANG
 	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r365631c/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
-	export STRIP="$(pwd)/gcc/bin/aarch64-linux-android-strip"
 fi
 export ARCH=arm64 && export SUBARCH=arm64
 
