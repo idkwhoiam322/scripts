@@ -16,14 +16,14 @@ export KBUILD_BUILD_HOST=raphielgangci
 if [[ "$@" =~ "beta"* ]]; then
 	export KERNEL_BUILD_TYPE="beta"
 elif [[ "$@" =~ "stable"* ]]; then
-	export VERA="-Weeb-Kernel"
+	export VERA="Weeb-Kernel"
 	export KERNEL_BUILD_TYPE="Stable"
 	export VERSION="${VERA}-${KERNEL_BUILD_TYPE}-v${RELEASE_VERSION}-${RELEASE_CODENAME}"
 fi
 
 # Export versions
 export KBUILD_BUILD_VERSION=204
-export LOCALVERSION=`echo ${VERSION}`
+export LOCALVERSION=`echo -${VERSION}`
 
 # Set COMPILER
 if [[ "$@" =~ "gcc" ]]; then
