@@ -17,7 +17,7 @@ export ACTUAL_HEAD=$(git rev-parse HEAD)
 
 # set git config details
 git config user.email "idkwhoiam322@raphielgang.org"
-git config user.name "whoknowswhoiam"
+git config user.name "idkwhoiam322"
 # apply patches
 cd pp
 git am -3 *.patch
