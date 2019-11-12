@@ -4,7 +4,7 @@ sudo install-package --update-new ccache bc bash git-core gnupg build-essential 
 		zip curl make automake autogen autoconf autotools-dev libtool shtool python \
 		m4 gcc libtool zlib1g-dev
 
-git clone https://github.com/whoknowswhoiam/weebanykernel3.git -b android10 --depth=1 anykernel
+git clone https://github.com/whoknowswhoiam/AnyKernel3.git -b android10 --depth=1 anykernel
 
 
 if [[ "$@" =~ "gcc" ]]; then

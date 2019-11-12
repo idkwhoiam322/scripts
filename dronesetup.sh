@@ -1,7 +1,7 @@
 #!/bin/bash
 cd ..
 
-git clone https://github.com/whoknowswhoiam/weebanykernel3.git -b android10 --depth=1 anykernel
+git clone https://github.com/whoknowswhoiam/AnyKernel3.git -b android10 --depth=1 anykernel
 
 
 if [[ "$@" =~ "gcc" ]]; then
