@@ -58,7 +58,6 @@ Branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>
 Build Number: <code>r${SEMAPHORE_BUILD_NUMBER}</code>
 Latest Commit: <code>$(git log --pretty=format:'%h : %s' -1)</code>
 <i>Build started on semaphore_ci....</i>" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
-curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build started for revision ${SEMAPHORE_BUILD_NUMBER}" -d chat_id=${KERNEL_CHAT_ID} -d parse_mode=HTML
 fi
 
 
