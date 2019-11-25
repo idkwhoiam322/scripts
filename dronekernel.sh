@@ -19,7 +19,7 @@ if [[ "$@" =~ "beta"* ]]; then
 elif [[ "$@" =~ "stable"* ]]; then
 	export VERA="Weeb-Kernel"
 	export KERNEL_BUILD_TYPE="Stable"
-	export VERSION="${VERA}-${KERNEL_BUILD_TYPE}-v${RELEASE_VERSION}-${RELEASE_CODENAME}"
+	export VERSION="${VERA}-v${RELEASE_VERSION}-${RELEASE_CODENAME}"
 fi
 
 # Export versions
