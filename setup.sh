@@ -21,7 +21,7 @@ else
 	git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 --depth=1 clang
 	cd clang
 	ls
-	find . | grep -v 'clang-r353983c' | xargs rm -rf
+	find . | grep -v 'clang-r370808' | xargs rm -rf
 	ls
 	cd ..
 fi

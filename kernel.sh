@@ -32,7 +32,7 @@ if [[ "$@" =~ "gcc" ]]; then
 	export CROSS_COMPILE_ARM32="$(pwd)/gcc32/bin/arm-eabi-"	
 else
 	export COMPILER=CLANG
-	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r353983c/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
+	export KBUILD_COMPILER_STRING="$($(pwd)/clang/clang-r370808/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
 fi
 export ARCH=arm64 && export SUBARCH=arm64
 
@@ -68,7 +68,7 @@ make O=out ARCH=arm64 $DEFCONFIG
 if [[ "$@" =~ "gcc" ]]; then
 	make -j${KEBABS} O=out ARCH=arm64
 else
-	make -j${KEBABS} O=out ARCH=arm64 CC="/home/runner/${SEMAPHORE_PROJECT_NAME}/clang/clang-r353983c/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc/bin/aarch64-linux-android-" CROSS_COMPILE_ARM32="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc32/bin/arm-linux-androideabi-"
+	make -j${KEBABS} O=out ARCH=arm64 CC="/home/runner/${SEMAPHORE_PROJECT_NAME}/clang/clang-r370808/bin/clang" CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc/bin/aarch64-linux-android-" CROSS_COMPILE_ARM32="/home/runner/${SEMAPHORE_PROJECT_NAME}/gcc32/bin/arm-linux-androideabi-"
 fi
 END=$(date +"%s")
 DIFF=$((END - START))
