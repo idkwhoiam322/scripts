@@ -72,14 +72,14 @@ zip -r9 ${ZIPNAME} * -x README.md ${ZIPNAME}
 CHECKER=$(ls -l ${ZIPNAME} | awk '{print $5}')
 
 if (($((CHECKER / 1048576)) > 5)); then
-	curl -F chat_id="${PERSONAL_CHANNEL_ID}" -F document=@"$(pwd)/${ZIPNAME}" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
+	curl -F chat_id="${CI_CHANNEL_ID}" -F document=@"$(pwd)/${ZIPNAME}" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
 else
-	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build r${DRONE_BUILD_NUMBER} throwing err0rs yO" -d chat_id=${PERSONAL_CHANNEL_ID}
+	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build r${DRONE_BUILD_NUMBER} throwing err0rs yO" -d chat_id=${CI_CHANNEL_ID}
 	exit 1;
 fi
 rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb && rm -rf modules
 cd ..
-	curl -F chat_id="${PERSONAL_CHANNEL_ID}" -F document=@"$(pwd)/out/System.map" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
+	curl -F chat_id="${CI_CHANNEL_ID}" -F document=@"$(pwd)/out/System.map" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
 rm -rf out
 
 # Reset back to actual head for user builds
