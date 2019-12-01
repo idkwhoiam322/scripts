@@ -4,7 +4,7 @@ rm -rf out
 # PREPPING
 
 # Set Kernel Info
-export VERA="-Hentai"
+export VERA="Hentai"
 export VERB_SET=$(git rev-parse HEAD)
 VERSION="${VERA}-personal-r${SEMAPHORE_BUILD_NUMBER}-${VERB_SET:0:7}"
 

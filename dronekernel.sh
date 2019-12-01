@@ -4,7 +4,7 @@ rm -rf out
 # PREPPING
 
 # Set Kernel Info
-export VERA="-Hentai-o-W-o"
+export VERA="Hentai-o-W-o"
 export VERB_SET=$(git rev-parse HEAD)
 export VERB="$(date +%Y%m%d)-$(echo ${VERB_SET:0:4})"
 VERSION="${VERA}-${VERB}-r${DRONE_BUILD_NUMBER}"
