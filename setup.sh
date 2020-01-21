@@ -13,13 +13,8 @@ fi
 git clone https://github.com/idkwhoiam322/AnyKernel3.git -b android10 --depth=1 anykernel3
 
 if [[ ${COMPILER} == "GCC" ]]; then
-	git clone https://github.com/kdrag0n/aarch64-elf-gcc -b 9.x --depth=3 gcc
-	git clone https://github.com/kdrag0n/arm-eabi-gcc -b 9.x --depth=3 gcc32
-	cd ${PROJECT_DIR}/gcc
-	git checkout 14e746a95f594cf841bdf8c2e6122c274da7f70b
-	cd ${PROJECT_DIR}/gcc32
-	git checkout 76c68effb613ff240ecad714f6c6f63368e91478
-	cd ${PROJECT_DIR}
+	git clone https://github.com/arter97/arm64-gcc.git -b master --depth=1 gcc
+	git clone https://github.com/arter97/arm32-gcc.git -b master --depth=1 gcc32
 else
 	git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b ndk-r19 --depth=1 gcc
 	git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b ndk-r19 --depth=1 gcc32
