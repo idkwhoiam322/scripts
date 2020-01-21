@@ -13,11 +13,6 @@ source env_vars.sh
 
 cd ${PROJECT_DIR} || exit
 
-if [[ ${BUILDFOR} == *"oos"* ]]; then
-	git fetch origin oos
-	git checkout oos
-fi
-
 # Telegram Post to CI channel
 if [[ "$@" =~ "post"* ]]; then
 curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage \
@@ -52,13 +47,6 @@ DIFF=$((END - START))
 if [ ! -f "${OUT_IMAGE_DIR}" ]; then
 	curl -s -X POST https://api.telegram.org/bot"${BOT_API_KEY}"/sendMessage -d text="Build throwing err0rs yO" -d chat_id="${CI_CHANNEL_ID}"
 	exit 1;
-fi
-
-if [[ ${BUILDFOR} == *"oos"* ]]; then
-# Make folder for wlan module in anykernel3
-	mkdir -p ${ANYKERNEL_DIR}/modules/vendor/lib/modules
-# Move WLAN module to anykernel3
-	cp ${PROJECT_DIR}/out/drivers/staging/qcacld-3.0/wlan.ko ${ANYKERNEL_DIR}/modules/vendor/lib/modules/qca_cld3_wlan.ko
 fi
 
 # Move kernel image to anykernel3 folder
