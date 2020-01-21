@@ -34,7 +34,6 @@ export COMPILER CROSS_COMPILE CROSS_COMPILE_ARM32
 
 # get current branch and kernel patch level
 CUR_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-KER_PATCH_LEVEL=$(grep "SUBLEVEL =" < Makefile | awk '{print $3}')$(grep "EXTRAVERSION =" < Makefile | awk '{print $3}')
 export CUR_BRANCH
 
 # Release type
@@ -45,7 +44,7 @@ if [[ ${KERNEL_BUILD_TYPE} == *"BETA"* ]]; then
 	MIN_HEAD=$(git rev-parse HEAD)
 	VERB="$(date +%Y%m%d)-$(echo ${MIN_HEAD:0:4})"
 	VERSION="${VERA}-${VERB}-${BUILDFOR}-r${CUR_BUILD_NUM}"
-	ZIPNAME="${MY_DEVICE}-${BUILDFOR}-${KERNEL_BUILD_TYPE}-r${CUR_BUILD_NUM}-${CUR_BRANCH}-${KER_PATCH_LEVEL}.zip"
+	ZIPNAME="${MY_DEVICE}-${BUILDFOR}-${KERNEL_BUILD_TYPE}-r${CUR_BUILD_NUM}-${CUR_BRANCH}.zip"
 elif [[ ${KERNEL_BUILD_TYPE} == *"STABLE"* ]]; then
 	KERNEL_BUILD_TYPE="Stable"
 	VERA="Weeb-Kernel"
