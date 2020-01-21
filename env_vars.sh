@@ -40,7 +40,7 @@ export CUR_BRANCH
 # Release type
 if [[ ${KERNEL_BUILD_TYPE} == *"BETA"* ]]; then
 	KERNEL_BUILD_TYPE="beta"
-	VERA="Hentai-o-W-o"
+	VERA="Hentai"
 	MIN_HEAD=$(git rev-parse HEAD)
 	VERB="$(date +%Y%m%d)-$(echo ${MIN_HEAD:0:4})"
 	VERSION="${VERA}-${VERB}-${BUILDFOR}-r${CUR_BUILD_NUM}"
