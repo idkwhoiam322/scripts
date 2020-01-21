@@ -23,7 +23,7 @@ if [[ "$@" =~ "post"* ]]; then
 curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage \
 -d text="Kernel: <code>Weeb Kernel</code>
 Type: <code>${KERNEL_BUILD_TYPE^^}</code>
-Device: <code>OnePlus 5/T</code>
+Device: <code>OnePlus 7/T/Pro/5G</code>
 Compiler: <code>${COMPILER}</code>
 Branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>
 Build Number: <code>r${CUR_BUILD_NUM}</code>
