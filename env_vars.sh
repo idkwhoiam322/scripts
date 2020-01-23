@@ -42,7 +42,7 @@ if [[ ${KERNEL_BUILD_TYPE} == *"BETA"* ]]; then
 	VERA="Hentai"
 	MY_DEVICE="op7pro"
 	MIN_HEAD=$(git rev-parse HEAD)
-	VERB="$(date +%Y%m%d)-$(echo ${MIN_HEAD:0:4})"
+	VERB="$(date +%Y%m%d)-$(echo ${MIN_HEAD:0:8})"
 	VERSION="${VERA}-${VERB}-${BUILDFOR}-r${CUR_BUILD_NUM}"
 	ZIPNAME="${MY_DEVICE}-${BUILDFOR}-${KERNEL_BUILD_TYPE}-r${CUR_BUILD_NUM}-${CUR_BRANCH}.zip"
 elif [[ ${KERNEL_BUILD_TYPE} == *"STABLE"* ]]; then
