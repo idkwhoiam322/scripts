@@ -44,7 +44,7 @@ if [[ ${KERNEL_BUILD_TYPE} == *"BETA"* ]]; then
 	MIN_HEAD=$(git rev-parse HEAD)
 	VERB="$(date +%Y%m%d)-$(echo ${MIN_HEAD:0:8})"
 	VERSION="${VERA}-${VERB}-r${CUR_BUILD_NUM}"
-	ZIPNAME="${MY_DEVICE}-${KERNEL_BUILD_TYPE}-r${CUR_BUILD_NUM}-${CUR_BRANCH}.zip"
+	ZIPNAME="${MY_DEVICE}-${CUR_BRANCH}-r${CUR_BUILD_NUM}.zip"
 elif [[ ${KERNEL_BUILD_TYPE} == *"STABLE"* ]]; then
 	KERNEL_BUILD_TYPE="Stable"
 	VERA="Weeb-Kernel"
