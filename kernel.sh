@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# Pick correct build config
-if [[ "$@" =~ "oos"* ]]; then
-	BUILDFOR="oos"
-else
-	BUILDFOR="custom"
-fi
-export BUILDFOR
-
 # get environment variables
 source env_vars.sh
 
