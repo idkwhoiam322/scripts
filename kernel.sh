@@ -51,7 +51,10 @@ zip -r9 "${ZIPNAME}" -- *
 curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage \
 	-d text="Build compiled successfully in $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds!" \
 	-d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
-curl -F chat_id="${CI_CHANNEL_ID}" -F document=@"$(pwd)/${ZIPNAME}" https://api.telegram.org/bot"${BOT_API_KEY}"/sendDocument
+curl -F chat_id="${CI_CHANNEL_ID}" \
+	-F caption="sha1sum: $(sha1sum ${ZIPNAME} | awk '{ print $1 }')" \
+	-F document=@"$(pwd)/${ZIPNAME}" \
+	https://api.telegram.org/bot"${BOT_API_KEY}"/sendDocument
 
 rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb && rm -rf modules
 cd ..
