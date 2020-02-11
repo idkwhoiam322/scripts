@@ -26,13 +26,31 @@ fi
 COUNT="$(grep -c '^processor' /proc/cpuinfo)"
 export JOBS="$((COUNT * 2))"
 
+export ARCH=arm64
+export SUBARCH=arm64
+
 START=$(date +"%s")
-make O=out ARCH=arm64 ${DEFCONFIG}
+make O=out ${DEFCONFIG}
 if [[ ${COMPILER} == "GCC" ]]; then
-	make -j${JOBS} O=out ARCH=arm64
+	make -j${JOBS} O=out
 else
-	make O=out -j${JOBS} ARCH=arm64 CC=$CC CLANG_TRIPLE=$CLANG_TRIPLE CROSS_COMPILE=$CROSS_COMPILE CROSS_COMPILE_ARM32=$CROSS_COMPILE_ARM32
+	export KBUILD_COMPILER_STRING="$(${CLANG_PATH}/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
+
+	LD_LIBRARY_PATH="${CLANG_PATH}/lib:${CLANG_PATH}/lib64${LD_LIBRARY_PATH}" \
+	PATH="${CLANG_PATH}/bin:${PROJECT_DIR}/gcc/bin:${PROJECT_DIR}/gcc32/bin:${PATH}" \
+	make O=out -j${JOBS} \
+	CC="${CLANG_PATH}/bin/clang" \
+	CLANG_TRIPLE="aarch64-linux-gnu-" \
+	CROSS_COMPILE="${PROJECT_DIR}/gcc/bin/aarch64-linux-android-" \
+	CROSS_COMPILE_ARM32="${PROJECT_DIR}/gcc32/bin/arm-linux-androideabi-" \
+	LD=ld.lld \
+	AR=llvm-ar \
+	NM=llvm-nm \
+	OBJCOPY=llvm-objcopy \
+	OBJDUMP=llvm-objdump \
+	STRIP=llvm-strip
 fi
+
 END=$(date +"%s")
 DIFF=$((END - START))
 

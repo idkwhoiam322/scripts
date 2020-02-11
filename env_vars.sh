@@ -23,12 +23,7 @@ if [[ ${COMPILER} == *"GCC"* ]]; then
 	CROSS_COMPILE="${PROJECT_DIR}/gcc/bin/aarch64-elf-"
 	CROSS_COMPILE_ARM32="${PROJECT_DIR}/gcc32/bin/arm-eabi-"
 else
-	KBUILD_COMPILER_STRING="$(${PROJECT_DIR}/clang/clang-r377782/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
-	CC="${PROJECT_DIR}/clang/clang-r377782/bin/clang"
-	CLANG_TRIPLE="aarch64-linux-gnu-"
-	CROSS_COMPILE="${PROJECT_DIR}/gcc/bin/aarch64-linux-android-"
-	CROSS_COMPILE_ARM32="${PROJECT_DIR}/gcc32/bin/arm-linux-androideabi-"
-	export KBUILD_COMPILER_STRING CC CLANG_TRIPLE
+	CLANG_PATH=${PROJECT_DIR}/clang/clang-r377782
 fi
 export COMPILER CROSS_COMPILE CROSS_COMPILE_ARM32
 
