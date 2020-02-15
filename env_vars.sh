@@ -49,8 +49,6 @@ fi
 export LOCALVERSION=$(echo "-${VERSION}")
 export ZIPNAME KERNEL_BUILD_TYPE
 
-export OUT_IMAGE_DIR="${PROJECT_DIR}/out/arch/arm64/boot/Image.gz-dtb"
-
 #export defconfig
 DEFCONFIG="weeb_defconfig"
 export DEFCONFIG
