@@ -20,6 +20,6 @@ else
 	git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 --depth=1 gcc32
 	git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 --depth=1 clang
 	cd ${PROJECT_DIR}/clang
-	find . | grep -v 'clang-r377782' | xargs rm -rf
+	find . | grep -v 'clang-r377782b' | xargs rm -rf
 	cd ${PROJECT_DIR}
 fi
