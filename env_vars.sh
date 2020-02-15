@@ -23,7 +23,7 @@ if [[ ${COMPILER} == *"GCC"* ]]; then
 	CROSS_COMPILE="${PROJECT_DIR}/gcc/bin/aarch64-elf-"
 	CROSS_COMPILE_ARM32="${PROJECT_DIR}/gcc32/bin/arm-eabi-"
 else
-	CLANG_PATH=${PROJECT_DIR}/clang/clang-r377782b
+	CLANG_PATH=${PROJECT_DIR}/clang/clang-r377782
 fi
 export COMPILER CROSS_COMPILE CROSS_COMPILE_ARM32
 
