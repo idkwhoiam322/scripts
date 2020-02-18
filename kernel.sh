@@ -54,19 +54,13 @@ fi
 END=$(date +"%s")
 DIFF=$((END - START))
 
-export OUT_IMAGE="${PROJECT_DIR}/out/arch/arm64/boot/Image.gz"
-export OUT_DTBO="${PROJECT_DIR}/out/arch/arm64/boot/dtbo.img"
-export OUT_DTB="${PROJECT_DIR}/out/arch/arm64/boot/dts/qcom/sm8150-v2.dtb"
-
-if [ ! -f "${OUT_IMAGE}" ]; then
+if [ ! -f "${OUT_IMAGE_DIR}" ]; then
 	curl -s -X POST https://api.telegram.org/bot"${BOT_API_KEY}"/sendMessage -d text="Build throwing err0rs yO" -d chat_id="${CI_CHANNEL_ID}"
 	exit 1;
 fi
 
-# Move kernel image, dtb and dtbo to anykernel3 folder
-cp ${OUT_IMAGE} ${ANYKERNEL_DIR}
-cp ${OUT_DTBO} ${ANYKERNEL_DIR}
-cp ${OUT_DTB} ${ANYKERNEL_DIR}/dtb
+# Move kernel image to anykernel3 folder
+cp ${OUT_IMAGE_DIR} ${ANYKERNEL_DIR}
 
 # POST ZIP OR REPORT FAILURE
 cd ${ANYKERNEL_DIR}
