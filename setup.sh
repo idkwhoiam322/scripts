@@ -5,8 +5,6 @@ source env_vars.sh
 
 cd ${PROJECT_DIR} || exit
 
-git submodule update --init
-
 if [[ ${CI_ENVIRONMENT} == "SEMAPHORE_CI" ]]; then
 	sudo install-package --update-new autogen bc ccache git-core guile-2.0-libs \
 			libgc1c2 libopts25-dev bash gnupg
