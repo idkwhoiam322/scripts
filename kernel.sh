@@ -34,15 +34,15 @@ make O=out ${DEFCONFIG}
 if [[ ${COMPILER} == "GCC" ]]; then
 	make -j${JOBS} O=out
 else
-	export KBUILD_COMPILER_STRING="$(${CLANG_PATH}/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')";
+	export KBUILD_COMPILER_STRING="$(${CLANG_PATH}/bin/clang --version | head -n 1 | perl -pe 's/\((?:http|git).*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')";
 
 	LD_LIBRARY_PATH="${CLANG_PATH}/lib:${CLANG_PATH}/lib64${LD_LIBRARY_PATH}" \
-	PATH="${CLANG_PATH}/bin:${PROJECT_DIR}/gcc/bin:${PROJECT_DIR}/gcc32/bin:${PATH}" \
+	PATH="${CLANG_PATH}/bin:${PATH}" \
 	make O=out -j${JOBS} \
 	CC="${CLANG_PATH}/bin/clang" \
 	CLANG_TRIPLE="aarch64-linux-gnu-" \
-	CROSS_COMPILE="${PROJECT_DIR}/gcc/bin/aarch64-linux-android-" \
-	CROSS_COMPILE_ARM32="${PROJECT_DIR}/gcc32/bin/arm-linux-androideabi-" \
+	CROSS_COMPILE="${PROJECT_DIR}/gcc/bin/aarch64-linux-gnu-" \
+	CROSS_COMPILE_ARM32="${PROJECT_DIR}/gcc32/bin/arm-linux-gnueabi-" \
 	LD=ld.lld \
 	AR=llvm-ar \
 	NM=llvm-nm \
