@@ -36,7 +36,6 @@ if [[ ${COMPILER} == "GCC" ]]; then
 else
 	export KBUILD_COMPILER_STRING="$(${CLANG_PATH}/bin/clang --version | head -n 1 | perl -pe 's/\((?:http|git).*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')";
 
-	LD_LIBRARY_PATH="${CLANG_PATH}/lib:${CLANG_PATH}/lib64${LD_LIBRARY_PATH}" \
 	PATH="${CLANG_PATH}/bin:${PATH}" \
 	make O=out -j${JOBS} \
 	CC="${CLANG_PATH}/bin/clang" \
