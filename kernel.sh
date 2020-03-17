@@ -38,10 +38,10 @@ else
 
 	PATH="${CLANG_PATH}/bin:${PATH}" \
 	make O=out -j${JOBS} \
-	CC="${CLANG_PATH}/bin/clang" \
+	CC="clang" \
 	CLANG_TRIPLE="aarch64-linux-gnu-" \
-	CROSS_COMPILE="${PROJECT_DIR}/gcc/bin/aarch64-linux-gnu-" \
-	CROSS_COMPILE_ARM32="${PROJECT_DIR}/gcc32/bin/arm-linux-gnueabi-" \
+	CROSS_COMPILE="aarch64-linux-gnu-" \
+	CROSS_COMPILE_ARM32="arm-linux-gnueabi-" \
 	LD=ld.lld \
 	AR=llvm-ar \
 	NM=llvm-nm \
