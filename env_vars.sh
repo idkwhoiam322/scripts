@@ -54,3 +54,9 @@ export OUT_IMAGE_DIR="${PROJECT_DIR}/out/arch/arm64/boot/Image.gz-dtb"
 #export defconfig
 DEFCONFIG="weeb_defconfig"
 export DEFCONFIG
+
+# boot image setup
+script_dir=${PROJECT_DIR}/script
+BOOT_IMG_NAME="boot.img"
+NEW_BOOT_IMG_NAME="$(git rev-parse --abbrev-ref HEAD)-r${CUR_BUILD_NUM}-boot.img"
+export script_dir BOOT_IMG_NAME NEW_BOOT_IMG_NAME

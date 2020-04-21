@@ -72,13 +72,33 @@ cp ${OUT_IMAGE_DIR} ${ANYKERNEL_DIR}
 cd ${ANYKERNEL_DIR}
 zip -r9 "${ZIPNAME}" -- *
 
-curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage \
-	-d text="Build compiled successfully in $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds!" \
-	-d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
 curl -F chat_id="${CI_CHANNEL_ID}" \
 	-F caption="sha1sum: $(sha1sum ${ZIPNAME} | awk '{ print $1 }')" \
 	-F document=@"$(pwd)/${ZIPNAME}" \
 	https://api.telegram.org/bot"${BOT_API_KEY}"/sendDocument
 
-rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb && rm -rf modules
-cd ..
+# Weeb/Hentai patch for custom boot.img
+
+# Patch kernel image for magisk
+magiskboot=${script_dir}/bin/magiskboot
+
+chmod 777 $magiskboot
+#$magiskboot decompress $comp_image $decomp_image;
+#$magiskboot hexpatch $decomp_image 736B69705F696E697472616D667300 77616E745F696E697472616D667300;
+#$magiskboot compress=gzip $decomp_image $comp_image;
+
+mkdir -p ${script_dir}/out ${script_dir}/temp
+
+cd ${script_dir}/temp
+$magiskboot unpack ${script_dir}/boot/$BOOT_IMG_NAME || { echo '$BOOT_IMG_NAME not found!' ; exit 1; }
+rm -rf kernel kernel_dtb
+
+cp ${ANYKERNEL_DIR}/Image.gz-dtb ${script_dir}/temp
+$magiskboot split Image.gz-dtb
+rm -rf Image.gz-dtb
+
+$magiskboot repack ${script_dir}/boot/$BOOT_IMG_NAME ${script_dir}/out/${NEW_BOOT_IMG_NAME}
+
+curl -F chat_id="${CI_CHANNEL_ID}" \
+	-F document=@"${script_dir}/out/${NEW_BOOT_IMG_NAME}" \
+	https://api.telegram.org/bot"${BOT_API_KEY}"/sendDocument
