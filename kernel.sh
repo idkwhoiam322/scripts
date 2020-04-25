@@ -74,26 +74,34 @@ curl -F chat_id="${CI_CHANNEL_ID}" \
 	https://api.telegram.org/bot"${BOT_API_KEY}"/sendDocument
 
 # Weeb/Hentai patch for custom boot.img
+mkbootimg=${script_dir}/bin/mkbootimg
+unpackbootimg=${script_dir}/bin/unpackbootimg
 
-# Patch kernel image for magisk
-decomp_image=${ANYKERNEL_DIR}/Image
-comp_image=$decomp_image.gz
-magiskboot=${script_dir}/bin/magiskboot
+chmod 777 $mkbootimg $unpackbootimg
 
-chmod 777 $magiskboot
-#$magiskboot decompress $comp_image $decomp_image;
-#$magiskboot hexpatch $decomp_image 736B69705F696E697472616D667300 77616E745F696E697472616D667300;
-#$magiskboot compress=gzip $decomp_image $comp_image;
+cd ${script_dir}/ramdisk
+find . | fakeroot cpio -H newc -o | lz4 -l -9 > ramdisk.cpio.lz4
 
-mkdir -p ${script_dir}/out ${script_dir}/temp
+mkdir -p ${script_dir}/out
 
-cd ${script_dir}/temp
-$magiskboot unpack ${script_dir}/boot/$BOOT_IMG_NAME || { echo '$BOOT_IMG_NAME not found!' ; exit 1; }
+cd ${script_dir}/boot
 
-cp ${ANYKERNEL_DIR}/Image.gz ${script_dir}/temp/kernel
-cp ${ANYKERNEL_DIR}/dtb ${script_dir}/temp/dtb
-
-$magiskboot repack ${script_dir}/boot/$BOOT_IMG_NAME ${script_dir}/out/${NEW_BOOT_IMG_NAME}
+$mkbootimg \
+    --kernel ${ANYKERNEL_DIR}/Image.gz \
+    --ramdisk ${script_dir}/ramdisk/ramdisk.cpio.lz4 \
+    --cmdline 'androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 androidboot.usbcontroller=a600000.dwc3 buildvariant=user printk.devkmsg=on' \
+    --base           0x00000000 \
+    --pagesize       4096 \
+    --kernel_offset  0x00008000 \
+    --ramdisk_offset 0x01000000 \
+    --second_offset  0x00f00000 \
+    --tags_offset    0x00000100 \
+    --dtb            ${ANYKERNEL_DIR}/dtb \
+    --dtb_offset     0x01f00000 \
+    --os_version     10.0.0 \
+    --os_patch_level 2020-04 \
+    --header_version 2 \
+    -o ${script_dir}/out/${NEW_BOOT_IMG_NAME}
 
 curl -F chat_id="${CI_CHANNEL_ID}" \
 	-F document=@"${script_dir}/out/${NEW_BOOT_IMG_NAME}" \
