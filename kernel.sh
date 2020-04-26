@@ -91,7 +91,7 @@ cd ${script_dir}/temp
 $magiskboot unpack ${script_dir}/boot/$BOOT_IMG_NAME || { echo '$BOOT_IMG_NAME not found!' ; exit 1; }
 
 cp ${ANYKERNEL_DIR}/Image.gz ${script_dir}/temp/kernel
-cp ${ANYKERNEL_DIR}/dtb ${script_dir}/temp/dtb
+cp ${ANYKERNEL_DIR}/dtb ${script_dir}/temp/kernel_dtb
 
 $magiskboot repack ${script_dir}/boot/$BOOT_IMG_NAME ${script_dir}/out/${NEW_BOOT_IMG_NAME}
 
