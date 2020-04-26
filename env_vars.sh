@@ -40,11 +40,13 @@ if [[ ${KERNEL_BUILD_TYPE} == *"BETA"* ]]; then
 	VERB="$(date +%Y%m%d)-$(echo ${MIN_HEAD:0:8})"
 	VERSION="${VERA}-${VERB}-r${CUR_BUILD_NUM}"
 	ZIPNAME="${MY_DEVICE}-${CUR_BRANCH}-r${CUR_BUILD_NUM}.zip"
+	NEW_BOOT_IMG_NAME="$(git rev-parse --abbrev-ref HEAD)-r${CUR_BUILD_NUM}-boot.img"
 elif [[ ${KERNEL_BUILD_TYPE} == *"STABLE"* ]]; then
 	KERNEL_BUILD_TYPE="Stable"
 	VERA="Weeb-Kernel"
 	VERSION="${VERA}-v${RELEASE_VERSION}-${RELEASE_CODENAME}-$(git rev-parse --abbrev-ref HEAD | cut -d '-' -f 1)"
 	ZIPNAME="${VERSION}.zip"
+	NEW_BOOT_IMG_NAME="v${RELEASE_VERSION}-${RELEASE_CODENAME}-$(git rev-parse --abbrev-ref HEAD | cut -d '-' -f 1)-boot.img"
 fi
 export LOCALVERSION=$(echo "-${VERSION}")
 export ZIPNAME KERNEL_BUILD_TYPE
@@ -56,5 +58,4 @@ export DEFCONFIG
 # boot image setup
 script_dir=${PROJECT_DIR}/script
 BOOT_IMG_NAME="boot.img"
-NEW_BOOT_IMG_NAME="$(git rev-parse --abbrev-ref HEAD)-r${CUR_BUILD_NUM}-boot.img"
 export script_dir BOOT_IMG_NAME NEW_BOOT_IMG_NAME
