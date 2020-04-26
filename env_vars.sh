@@ -43,7 +43,7 @@ if [[ ${KERNEL_BUILD_TYPE} == *"BETA"* ]]; then
 elif [[ ${KERNEL_BUILD_TYPE} == *"STABLE"* ]]; then
 	KERNEL_BUILD_TYPE="Stable"
 	VERA="Weeb-Kernel"
-	VERSION="${VERA}-v${RELEASE_VERSION}-${RELEASE_CODENAME}"
+	VERSION="${VERA}-v${RELEASE_VERSION}-${RELEASE_CODENAME}-$(git rev-parse --abbrev-ref HEAD | cut -d '-' -f 1)"
 	ZIPNAME="${VERSION}.zip"
 fi
 export LOCALVERSION=$(echo "-${VERSION}")
