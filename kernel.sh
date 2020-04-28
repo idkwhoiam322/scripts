@@ -34,7 +34,7 @@ make O=out ${DEFCONFIG}
 if [[ ${COMPILER} == "GCC" ]]; then
 	make -j${JOBS} O=out
 else
-	export KBUILD_COMPILER_STRING="$(${CLANG_PATH}/bin/clang --version | head -n 1 | perl -pe 's/\((?:http|git).*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')";
+	export KBUILD_COMPILER_STRING="$(${CLANG_PATH}/bin/clang --version | head -n 1 | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')";
 
 	PATH="${CLANG_PATH}/bin:${PATH}" \
 	make O=out -j${JOBS} \
