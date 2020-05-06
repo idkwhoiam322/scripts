@@ -95,6 +95,9 @@ cp ${ANYKERNEL_DIR}/dtb ${script_dir}/temp/dtb
 
 $magiskboot repack ${script_dir}/boot/$BOOT_IMG_NAME ${script_dir}/out/${NEW_BOOT_IMG_NAME}
 
+# Sleep to prevent errors such as:
+# {"ok":false,"error_code":429,"description":"Too Many Requests: retry after 8","parameters":{"retry_after":8}}
+sleep 2;
 curl -F chat_id="${CI_CHANNEL_ID}" \
 	-F document=@"${script_dir}/out/${NEW_BOOT_IMG_NAME}" \
 	https://api.telegram.org/bot"${BOT_API_KEY}"/sendDocument
