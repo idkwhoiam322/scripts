@@ -38,7 +38,7 @@ if [[ ${KERNEL_BUILD_TYPE} == *"BETA"* ]]; then
 	MY_DEVICE="op7pro"
 	MIN_HEAD=$(git rev-parse HEAD)
 	VERB="$(date +%Y%m%d)-$(echo ${MIN_HEAD:0:8})"
-	VERSION="${VERA}-${VERB}-r${CUR_BUILD_NUM}"
+	VERSION="${VERA}-${VERB}-${CUR_BRANCH}-r${CUR_BUILD_NUM}"
 	ZIPNAME="${MY_DEVICE}-${CUR_BRANCH}-r${CUR_BUILD_NUM}.zip"
 	NEW_BOOT_IMG_NAME="$(git rev-parse --abbrev-ref HEAD)-r${CUR_BUILD_NUM}-boot.img"
 elif [[ ${KERNEL_BUILD_TYPE} == *"STABLE"* ]]; then
