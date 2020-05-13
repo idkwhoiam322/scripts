@@ -37,7 +37,7 @@ if [[ ${KERNEL_BUILD_TYPE} == *"BETA"* ]]; then
 	VERA="Hentai"
 	MY_DEVICE="op5"
 	MIN_HEAD=$(git rev-parse HEAD)
-	VERB="$(date +%Y%m%d)-$(echo ${MIN_HEAD:0:8})"
+	VERB="$(echo ${MIN_HEAD:0:8})"
 	VERSION="${VERA}-${VERB}-${CUR_BRANCH}-r${CUR_BUILD_NUM}"
 	ZIPNAME="${MY_DEVICE}-${CUR_BRANCH}-r${CUR_BUILD_NUM}.zip"
 	NEW_BOOT_IMG_NAME="$(git rev-parse --abbrev-ref HEAD)-r${CUR_BUILD_NUM}-boot.img"
