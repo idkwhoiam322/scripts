@@ -75,9 +75,8 @@ curl -F chat_id="${CI_CHANNEL_ID}" \
 
 # Weeb/Hentai patch for custom boot.img
 mkbootimg=${script_dir}/bin/mkbootimg
-unpackbootimg=${script_dir}/bin/unpackbootimg
 
-chmod 777 $mkbootimg $unpackbootimg
+chmod 777 $mkbootimg
 
 mkdir -p ${script_dir}/out
 
