@@ -83,7 +83,7 @@ mkdir -p ${script_dir}/out
 cd ${script_dir}/boot
 
 export OS="10.0.0"
-export SPL="2020-06"
+export SPL="2020-07"
 
 $mkbootimg \
     --kernel ${ANYKERNEL_DIR}/Image.gz \
