@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Tell env that this is a standalone build
+IS_KERNEL_STANDALONE=y
+export IS_KERNEL_STANDALONE
+
 # Export custom User and Host
 KBUILD_BUILD_USER=idkwhoiam322
 KBUILD_BUILD_HOST=raphielgang_ci
