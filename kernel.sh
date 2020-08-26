@@ -75,8 +75,15 @@ curl -F chat_id="${CI_CHANNEL_ID}" \
 
 # Weeb/Hentai patch for custom boot.img
 mkbootimg=${script_dir}/bin/mkbootimg
-
 chmod 777 $mkbootimg
+
+magiskboot=${script_dir}/bin/magiskboot
+chmod 777 $magiskboot
+# Undo Magisk want_initramfs hack ('want_initramfs' -> 'skip_initramfs')
+$magiskboot --decompress ${ANYKERNEL_DIR}/Image.gz ${ANYKERNEL_DIR}/Image;
+# original: $bin/magiskboot --hexpatch $decompressed_image 736B69705F696E697472616D667300 77616E745F696E697472616D667300;
+$magiskboot --hexpatch ${ANYKERNEL_DIR}/Image 77616E745F696E697472616D667300 736B69705F696E697472616D667300;
+$magiskboot --compress=gzip ${ANYKERNEL_DIR}/Image ${ANYKERNEL_DIR}/Image.gz;
 
 mkdir -p ${script_dir}/out
 
